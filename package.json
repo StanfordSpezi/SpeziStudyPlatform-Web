@@ -61,7 +61,7 @@
   "devDependencies": {
     "@hono/node-server": "^1.18.2",
     "@hono/zod-openapi": "^1.1.0",
-    "@playwright/test": "^1.55.0",
+    "@playwright/test": "^1.56.1",
     "@scalar/hono-api-reference": "^0.9.13",
     "@stanfordspezi/spezi-web-configurations": "^0.5.1",
     "@tanstack/router-plugin": "^1.117.2",
