@@ -72,7 +72,7 @@
     "@vitejs/plugin-react": "^4.4.1",
     "concurrently": "^9.2.0",
     "eslint": "^9",
-    "hono": "^4.9.6",
+    "hono": "^4.12.0",
     "prettier": "^3",
     "tsx": "^4.20.4",
     "typescript": "^5",
