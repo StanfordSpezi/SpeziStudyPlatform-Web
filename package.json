@@ -29,7 +29,8 @@
     "lint:ci": "eslint --output-file eslint_report.json --format json .",
     "prepush": "npm run lint:fix && tsc --noEmit",
     "test": "playwright test",
-    "generate:api": "openapi-ts"
+    "generate:api": "openapi-ts",
+    "postinstall": "openapi-ts"
   },
   "dependencies": {
     "@hey-api/client-fetch": "^0.13.1",

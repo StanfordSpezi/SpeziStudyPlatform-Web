@@ -11,7 +11,7 @@ import { defineConfig } from "@hey-api/openapi-ts";
 // eslint-disable-next-line import/no-default-export -- required by hey-api config
 export default defineConfig({
   input:
-    "https://raw.githubusercontent.com/StanfordSpezi/SpeziStudyPlatform-API/refs/tags/0.0.1/openapi.yaml",
+    "https://raw.githubusercontent.com/StanfordSpezi/SpeziStudyPlatform-API/refs/tags/0.0.2/openapi.yaml",
   output: { path: "src/lib/api/generated" },
   plugins: [
     "@hey-api/typescript",
