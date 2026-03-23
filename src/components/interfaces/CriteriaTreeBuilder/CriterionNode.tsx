@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -24,8 +24,8 @@ import {
   LEAF_CRITERION_TYPES,
   LEAF_OPERATORS,
   createDefaultCriterion,
-  isNegated,
-  type LeafCriterionType,
+  isLeafCriterionType,
+  unwrapNegation,
 } from "./types";
 
 interface CriterionNodeProps {
@@ -56,14 +56,14 @@ const RemoveButton = ({
 
 const GroupCriterionNode = ({
   innerCriterion,
-  isNot,
+  isNegated,
   onChange,
   handleInnerChange,
   onRemove,
   depth,
 }: {
   innerCriterion: Extract<ParticipationCriterion, { type: "all" | "any" }>;
-  isNot: boolean;
+  isNegated: boolean;
   onChange: (criterion: ParticipationCriterion) => void;
   handleInnerChange: (updated: ParticipationCriterion) => void;
   onRemove?: () => void;
@@ -71,7 +71,7 @@ const GroupCriterionNode = ({
 }) => {
   const currentMatchType = GROUP_MATCH_TYPES.find(
     (matchType) =>
-      matchType.type === innerCriterion.type && matchType.negated === isNot,
+      matchType.type === innerCriterion.type && matchType.negated === isNegated,
   );
   const matchTypeValue = currentMatchType?.value ?? "all";
   const connector = currentMatchType?.connector ?? "and";
@@ -92,15 +92,20 @@ const GroupCriterionNode = ({
     );
   };
 
-  const updateChildAt = (index: number, updated: ParticipationCriterion) => {
-    const newCriteria = [...innerCriterion.criteria];
-    newCriteria[index] = updated;
-    handleInnerChange({ ...innerCriterion, criteria: newCriteria });
+  const updateChildAt = (
+    index: number,
+    updatedCriterion: ParticipationCriterion,
+  ) => {
+    const updatedCriteria = [...innerCriterion.criteria];
+    updatedCriteria[index] = updatedCriterion;
+    handleInnerChange({ ...innerCriterion, criteria: updatedCriteria });
   };
 
   const removeChildAt = (index: number) => {
-    const newCriteria = innerCriterion.criteria.filter((_, i) => i !== index);
-    handleInnerChange({ ...innerCriterion, criteria: newCriteria });
+    const filteredCriteria = innerCriterion.criteria.filter(
+      (_, childIndex) => childIndex !== index,
+    );
+    handleInnerChange({ ...innerCriterion, criteria: filteredCriteria });
   };
 
   const addChild = (criterion: ParticipationCriterion) => {
@@ -180,7 +185,7 @@ const GroupCriterionNode = ({
 
 const LeafCriterionNode = ({
   innerCriterion,
-  isNot,
+  isNegated,
   onChange,
   handleInnerChange,
   handleTypeChange,
@@ -188,14 +193,15 @@ const LeafCriterionNode = ({
   depth,
 }: {
   innerCriterion: ParticipationCriterion;
-  isNot: boolean;
+  isNegated: boolean;
   onChange: (criterion: ParticipationCriterion) => void;
   handleInnerChange: (updated: ParticipationCriterion) => void;
   handleTypeChange: (newType: string) => void;
   onRemove?: () => void;
   depth: number;
 }) => {
-  const leafType = innerCriterion.type as LeafCriterionType;
+  if (!isLeafCriterionType(innerCriterion.type)) return null;
+  const leafType = innerCriterion.type;
   const operators = LEAF_OPERATORS[leafType];
 
   const handleOperatorChange = (value: string) => {
@@ -227,7 +233,7 @@ const LeafCriterionNode = ({
       </Select>
       <Select
         key={leafType}
-        value={isNot ? "negated" : "normal"}
+        value={isNegated ? "negated" : "normal"}
         onValueChange={handleOperatorChange}
       >
         <SelectTrigger className="w-40">
@@ -255,23 +261,24 @@ export const CriterionNode = ({
   onRemove,
   depth,
 }: CriterionNodeProps) => {
-  const unwrappedCriterion = isNegated(criterion);
+  const unwrappedCriterion = unwrapNegation(criterion);
   const innerCriterion = unwrappedCriterion ?? criterion;
-  const isNot = unwrappedCriterion !== null;
+  const isNegated = unwrappedCriterion !== null;
 
   const handleInnerChange = (updated: ParticipationCriterion) => {
-    onChange(isNot ? { type: "not", criterion: updated } : updated);
+    onChange(isNegated ? { type: "not", criterion: updated } : updated);
   };
 
   const handleTypeChange = (newType: string) => {
-    handleInnerChange(createDefaultCriterion(newType as LeafCriterionType));
+    if (!isLeafCriterionType(newType)) return;
+    handleInnerChange(createDefaultCriterion(newType));
   };
 
   if (innerCriterion.type === "all" || innerCriterion.type === "any") {
     return (
       <GroupCriterionNode
         innerCriterion={innerCriterion}
-        isNot={isNot}
+        isNegated={isNegated}
         onChange={onChange}
         handleInnerChange={handleInnerChange}
         onRemove={onRemove}
@@ -283,7 +290,7 @@ export const CriterionNode = ({
   return (
     <LeafCriterionNode
       innerCriterion={innerCriterion}
-      isNot={isNot}
+      isNegated={isNegated}
       onChange={onChange}
       handleInnerChange={handleInnerChange}
       handleTypeChange={handleTypeChange}

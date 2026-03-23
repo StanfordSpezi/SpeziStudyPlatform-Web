@@ -1,6 +1,6 @@
 <!--
 
-This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
@@ -46,8 +46,8 @@ If not installed, [install npm](https://docs.npmjs.com/downloading-and-installin
 ## 3. Clone the repository
 
 ```bash
-git clone https://github.com/StanfordSpezi/spezi-web-study-platform.git
-cd spezi-web-study-platform
+git clone https://github.com/StanfordSpezi/SpeziStudyPlatform-Web.git
+cd SpeziStudyPlatform-Web
 ```
 
 ## 4. Create a .env file

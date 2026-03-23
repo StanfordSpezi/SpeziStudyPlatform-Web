@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -11,8 +11,8 @@ import type { ParticipationCriterion } from "@/lib/api/generated/types.gen";
 import {
   GROUP_MATCH_TYPES,
   LEAF_OPERATORS,
-  isNegated,
-  type LeafCriterionType,
+  isLeafCriterionType,
+  unwrapNegation,
 } from "./types";
 
 interface CriteriaDisplayProps {
@@ -27,8 +27,8 @@ const LeafDisplay = ({
   criterion: ParticipationCriterion;
   negated: boolean;
 }) => {
-  const leafType = criterion.type as LeafCriterionType;
-  const operators = LEAF_OPERATORS[leafType];
+  if (!isLeafCriterionType(criterion.type)) return null;
+  const operators = LEAF_OPERATORS[criterion.type];
   const operator = negated ? operators.negated : operators.normal;
 
   switch (criterion.type) {
@@ -60,14 +60,15 @@ const CriterionDisplayNode = ({
 }: {
   criterion: ParticipationCriterion;
 }) => {
-  const unwrappedCriterion = isNegated(criterion);
-  const innerCriterion = unwrappedCriterion ?? criterion;
-  const isNot = unwrappedCriterion !== null;
+  const negatedInner = unwrapNegation(criterion);
+  const innerCriterion = negatedInner ?? criterion;
+  const isNegated = negatedInner !== null;
 
   if (innerCriterion.type === "all" || innerCriterion.type === "any") {
     const groupMatch = GROUP_MATCH_TYPES.find(
       (matchType) =>
-        matchType.type === innerCriterion.type && matchType.negated === isNot,
+        matchType.type === innerCriterion.type &&
+        matchType.negated === isNegated,
     );
     const label = groupMatch?.label ?? "Group";
     const connector = innerCriterion.type === "all" ? "AND" : "OR";
@@ -101,7 +102,7 @@ const CriterionDisplayNode = ({
 
   return (
     <p className="text-sm">
-      <LeafDisplay criterion={innerCriterion} negated={isNot} />
+      <LeafDisplay criterion={innerCriterion} negated={isNegated} />
     </p>
   );
 };

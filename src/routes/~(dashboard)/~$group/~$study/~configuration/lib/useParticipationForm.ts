@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -28,8 +28,6 @@ const participationFormSchema = z.object({
 const defaultValues: z.infer<typeof participationFormSchema> = {
   participationCriterion: null,
 };
-
-export type ParticipationForm = ReturnType<typeof useParticipationForm>;
 
 /**
  * Creates a participation form that loads the study participation criterion once available.
@@ -60,5 +58,7 @@ export const useParticipationForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [study]);
 
-  return form;
+  return { form };
 };
+
+export type ParticipationForm = ReturnType<typeof useParticipationForm>["form"];

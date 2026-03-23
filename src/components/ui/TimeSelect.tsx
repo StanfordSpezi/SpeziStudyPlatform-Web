@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -61,6 +61,16 @@ for (let hour = 0; hour < 24; hour += 1) {
   }
 }
 
+const isValidTimeValue = (
+  hours: number,
+  minutes: number,
+): minutes is TimeSelectMinute =>
+  !Number.isNaN(hours) &&
+  !Number.isNaN(minutes) &&
+  hours >= 0 &&
+  hours <= 23 &&
+  minuteValues.includes(minutes as TimeSelectMinute);
+
 export const TimeSelect = ({
   id,
   value,
@@ -72,34 +82,17 @@ export const TimeSelect = ({
   const handleValueChange = (nextValue: string) => {
     const [hoursPart, minutesPart] = nextValue.split(":");
     const hours = Number.parseInt(hoursPart, 10);
-    const minutes = Number.parseInt(minutesPart, 10) as TimeSelectMinute;
+    const minutes = Number.parseInt(minutesPart, 10);
 
-    if (
-      Number.isNaN(hours) ||
-      Number.isNaN(minutes) ||
-      hours < 0 ||
-      hours > 23 ||
-      !minuteValues.includes(minutes)
-    ) {
-      return;
-    }
+    if (!isValidTimeValue(hours, minutes)) return;
 
     onChange({ hours, minutes });
   };
 
   const getSelectedValue = () => {
-    if (!value) {
+    if (!value || !isValidTimeValue(value.hours, value.minutes)) {
       return undefined;
     }
-
-    if (
-      value.hours < 0 ||
-      value.hours > 23 ||
-      !minuteValues.includes(value.minutes)
-    ) {
-      return undefined;
-    }
-
     return formatTime(value.hours, value.minutes);
   };
 

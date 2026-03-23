@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -11,8 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { z } from "zod";
-import { getStudiesByStudyIdOptions } from "@/lib/api/generated/@tanstack/react-query.gen";
 import { zStudyDetailContent } from "@/lib/api/generated/zod.gen";
+import { studyResponseQueryOptions } from "@/lib/queries/study";
 
 // Extend the generated StudyDetailContent schema with icon and form-specific
 // nullable semantics (form fields can be explicitly cleared)
@@ -32,8 +32,6 @@ const defaultValues: z.infer<typeof generalFormSchema> = {
   shortExplanationText: null,
 };
 
-export type GeneralForm = ReturnType<typeof useGeneralForm>["form"];
-
 /**
  * Creates the general study form for a specific locale.
  * Uses the raw StudyResponse so callers can access `details` for locale preservation on save.
@@ -43,7 +41,7 @@ export const useGeneralForm = (locale: string) => {
     from: "/(dashboard)/$group/$study/configuration/general",
   });
   const { data: studyResponse } = useQuery(
-    getStudiesByStudyIdOptions({ path: { studyId: params.study } }),
+    studyResponseQueryOptions({ studyId: params.study }),
   );
 
   const localeDetails = studyResponse?.details[locale];
@@ -74,3 +72,5 @@ export const useGeneralForm = (locale: string) => {
 
   return { form, studyResponse };
 };
+
+export type GeneralForm = ReturnType<typeof useGeneralForm>["form"];

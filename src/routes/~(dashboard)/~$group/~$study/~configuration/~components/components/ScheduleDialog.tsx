@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -34,7 +34,7 @@ import { TimeSelect, type TimeSelectValue } from "@/components/ui/TimeSelect";
 import type {
   RepetitionPattern,
   StudyLifecycleEvent,
-} from "@/lib/api/generated";
+} from "@/lib/api/generated/types.gen";
 import { cn } from "@/utils/cn";
 import { enhanceField } from "@/utils/enhanceField";
 import { formatSchedule } from "../../lib/formatSchedule";
@@ -101,12 +101,13 @@ export const ScheduleDialog = () => {
   } = useScheduleForm();
   const formValues = form.watch();
 
-  const definition = formValues.scheduleDefinition;
-  const isOnce = definition.type === "once";
-  const { hour, minute, isCompletedTask } = extractScheduleTime(definition);
+  const scheduleDefinition = formValues.scheduleDefinition;
+  const isOnce = scheduleDefinition.type === "once";
+  const { hour, minute, isCompletedTask } =
+    extractScheduleTime(scheduleDefinition);
 
-  const isWeekly = !isOnce && definition.pattern.type === "weekly";
-  const isMonthly = !isOnce && definition.pattern.type === "monthly";
+  const isWeekly = !isOnce && scheduleDefinition.pattern.type === "weekly";
+  const isMonthly = !isOnce && scheduleDefinition.pattern.type === "monthly";
 
   const handleSubmit = form.handleSubmit((data) => {
     submitSchedule(data, dialog.close);
@@ -121,7 +122,7 @@ export const ScheduleDialog = () => {
   };
 
   const setTime = ({ hours, minutes }: TimeSelectValue) => {
-    if (definition.type === "once") {
+    if (scheduleDefinition.type === "once") {
       form.setValue("scheduleDefinition.pattern.time", {
         hour: hours,
         minute: minutes,
@@ -133,8 +134,8 @@ export const ScheduleDialog = () => {
     }
   };
 
-  const switchScheduleType = (type: string) => {
-    switch (type) {
+  const switchScheduleType = (scheduleType: string) => {
+    switch (scheduleType) {
       case "once": {
         form.setValue("scheduleDefinition", makeOnceDefinition(hour, minute));
         return;
@@ -149,18 +150,18 @@ export const ScheduleDialog = () => {
     }
   };
 
-  const switchEventType = (type: string) => {
+  const switchEventType = (eventType: string) => {
     form.setValue("scheduleDefinition.pattern.event", {
-      type,
-      ...(type === "completedTask" && { componentId: "" }),
+      type: eventType,
+      ...(eventType === "completedTask" && { componentId: "" }),
     } as StudyLifecycleEvent);
   };
 
-  const switchRepeatPattern = (patternType: string) => {
+  const switchRepeatPattern = (repeatPatternType: string) => {
     form.setValue(
       "scheduleDefinition",
       makeRepeatedDefinition(
-        patternType as RepetitionPattern["type"],
+        repeatPatternType as RepetitionPattern["type"],
         hour,
         minute,
       ),

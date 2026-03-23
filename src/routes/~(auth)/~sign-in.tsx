@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -40,7 +40,7 @@ const SignInRoute = () => {
         className="text-text-tertiary text-sm"
         asChild
       >
-        <a href="https://github.com/StanfordSpezi/spezi-web-study-platform/issues">
+        <a href="https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/issues">
           Trouble signing in?
         </a>
       </Button>

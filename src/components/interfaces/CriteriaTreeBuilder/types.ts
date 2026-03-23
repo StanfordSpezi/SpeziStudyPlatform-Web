@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -25,6 +25,9 @@ type GroupCriterionType = (AllCriterion | AnyCriterion)["type"];
 
 export const LEAF_CRITERION_TYPES: [LeafCriterionType, ...LeafCriterionType[]] =
   ["ageAtLeast", "isFromRegion", "speaksLanguage"];
+
+export const isLeafCriterionType = (type: string): type is LeafCriterionType =>
+  LEAF_CRITERION_TYPES.includes(type as LeafCriterionType);
 
 export const CRITERION_TYPE_LABELS: Record<LeafCriterionType, string> = {
   ageAtLeast: "Age",
@@ -98,10 +101,9 @@ export const createDefaultCriterion = (
 };
 
 /**
- * Detects whether a criterion is wrapped in a NOT node.
- * Returns the inner criterion if negated, or null if not.
+ * Unwraps a NOT node, returning the inner criterion if negated, or null if not.
  */
-export const isNegated = (
+export const unwrapNegation = (
   criterion: ParticipationCriterion,
 ): ParticipationCriterion | null => {
   if (criterion.type === "not") return criterion.criterion;

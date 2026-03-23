@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -9,12 +9,17 @@
 import { toast } from "@stanfordspezi/spezi-web-design-system";
 import { useQueryClient } from "@tanstack/react-query";
 
+const hasStringProperty = (
+  object: object,
+  key: string,
+): object is Record<string, unknown> =>
+  key in object && typeof (object as Record<string, unknown>)[key] === "string";
+
 const getErrorDescription = (error: unknown): string | undefined => {
   if (typeof error !== "object" || error === null) return undefined;
-  const errorObject = error as Record<string, unknown>;
-  if (typeof errorObject.detail === "string") return errorObject.detail;
-  if (typeof errorObject.title === "string") return errorObject.title;
-  if (typeof errorObject.message === "string") return errorObject.message;
+  if (hasStringProperty(error, "detail")) return error.detail as string;
+  if (hasStringProperty(error, "title")) return error.title as string;
+  if (hasStringProperty(error, "message")) return error.message as string;
   return undefined;
 };
 

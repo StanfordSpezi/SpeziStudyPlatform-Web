@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -18,7 +18,7 @@ import { useParticipationForm } from "./lib/useParticipationForm";
 
 const ParticipationRouteComponent = () => {
   const params = Route.useParams();
-  const form = useParticipationForm();
+  const { form } = useParticipationForm();
   const updateStudy = useUpdateStudyMutation();
 
   const handleSubmit = form.handleSubmit((data) => {

@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -60,34 +60,28 @@ export const extractScheduleTime = (definition: ScheduleDefinition) => {
   return { hour: DEFAULT_HOUR, minute: DEFAULT_MINUTE, isCompletedTask: false };
 };
 
-export const SCHEDULE_TYPE_OPTIONS: Array<
-  SelectOption<ScheduleDefinition["type"]>
-> = [
+export const SCHEDULE_TYPE_OPTIONS = [
   { value: "once", label: "Once" },
   { value: "repeated", label: "Repeated" },
-];
+] as const satisfies ReadonlyArray<SelectOption<ScheduleDefinition["type"]>>;
 
-export const EVENT_TYPE_OPTIONS: Array<
-  SelectOption<StudyLifecycleEvent["type"]>
-> = [
+export const EVENT_TYPE_OPTIONS = [
   { value: "enrollment", label: "Enrollment" },
   { value: "activation", label: "Activation" },
   { value: "unenrollment", label: "Unenrollment" },
   { value: "studyEnd", label: "Study end" },
   { value: "completedTask", label: "Completed task" },
-];
+] as const satisfies ReadonlyArray<SelectOption<StudyLifecycleEvent["type"]>>;
 
-export const REPEAT_PATTERN_OPTIONS: Array<
-  SelectOption<RepetitionPattern["type"]>
-> = [
+export const REPEAT_PATTERN_OPTIONS = [
   { value: "daily", label: "Daily" },
   { value: "weekly", label: "Weekly" },
   { value: "monthly", label: "Monthly" },
-];
+] as const satisfies ReadonlyArray<SelectOption<RepetitionPattern["type"]>>;
 
 type Weekday = NonNullable<WeeklyRepetition["weekday"]>;
 
-export const WEEKDAY_OPTIONS: Array<SelectOption<Weekday>> = [
+export const WEEKDAY_OPTIONS = [
   { value: "monday", label: "Monday" },
   { value: "tuesday", label: "Tuesday" },
   { value: "wednesday", label: "Wednesday" },
@@ -95,17 +89,15 @@ export const WEEKDAY_OPTIONS: Array<SelectOption<Weekday>> = [
   { value: "friday", label: "Friday" },
   { value: "saturday", label: "Saturday" },
   { value: "sunday", label: "Sunday" },
-];
+] as const satisfies ReadonlyArray<SelectOption<Weekday>>;
 
-export const COMPLETION_POLICY_OPTIONS: Array<
-  SelectOption<AllowedCompletionPolicy>
-> = [
+export const COMPLETION_POLICY_OPTIONS = [
   { value: "sameDay", label: "Same day" },
   { value: "afterStart", label: "After start" },
   { value: "sameDayAfterStart", label: "Same day after start" },
   { value: "duringEvent", label: "During event" },
   { value: "anytime", label: "Anytime" },
-];
+] as const satisfies ReadonlyArray<SelectOption<AllowedCompletionPolicy>>;
 
 /**
  * Builds a repeated schedule definition for the given pattern type and time.

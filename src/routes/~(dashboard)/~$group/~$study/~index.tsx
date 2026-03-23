@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -16,7 +16,7 @@ const StudyHomeRoute = () => {
       <div className="w-full max-w-3xl">
         <Card>
           <CardHeader
-            title="Welcome to the Spezi Web Study Platform"
+            title="Welcome to the SpeziStudyPlatform-Web"
             description="Build and run simple research studies without deep technical expertise."
           />
           <div className="space-y-4 p-(--card-padding)">
@@ -29,7 +29,7 @@ const StudyHomeRoute = () => {
             <div className="flex justify-end">
               <Button size="xs" variant="outline" className="gap-1.5" asChild>
                 <a
-                  href="https://github.com/StanfordSpezi/spezi-web-study-platform"
+                  href="https://github.com/StanfordSpezi/SpeziStudyPlatform-Web"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

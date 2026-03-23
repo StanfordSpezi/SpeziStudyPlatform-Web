@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -31,6 +31,9 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
  * Provides Keycloak authentication state to the React tree.
  * Initializes Keycloak on mount and sets up automatic token refresh.
  */
+/** Refresh the token if it expires within this many seconds. */
+const TOKEN_REFRESH_THRESHOLD_SECONDS = 30;
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // Wire the access token provider into the API client
         setAccessTokenProvider(async () => {
           // Refresh if the token expires within 30 seconds
-          await keycloak.updateToken(30);
+          await keycloak.updateToken(TOKEN_REFRESH_THRESHOLD_SECONDS);
           return keycloak.token;
         });
       }
@@ -63,7 +66,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const onAuthSuccess = () => setIsAuthenticated(true);
     const onAuthLogout = () => setIsAuthenticated(false);
     const onTokenExpired = () => {
-      keycloak.updateToken(30).catch(() => setIsAuthenticated(false));
+      keycloak
+        .updateToken(TOKEN_REFRESH_THRESHOLD_SECONDS)
+        .catch(() => setIsAuthenticated(false));
     };
 
     keycloak.onAuthSuccess = onAuthSuccess;

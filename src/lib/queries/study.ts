@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -24,12 +24,19 @@ export const studyListQueryOptions = ({ groupId }: { groupId: string }) =>
     path: { groupId },
   });
 
+/**
+ * Returns the raw StudyResponse without transformation.
+ * Used by forms that need access to all locale details (e.g. the general form).
+ */
+export const studyResponseQueryOptions = ({ studyId }: { studyId: string }) =>
+  getStudiesByStudyIdOptions({ path: { studyId } });
+
 export const studyRetrieveQueryOptions = ({
   studyId,
 }: {
   studyId: string;
 }) => ({
-  ...getStudiesByStudyIdOptions({ path: { studyId } }),
+  ...studyResponseQueryOptions({ studyId }),
   select: (data: StudyResponse) => parseStudyResponse(data),
 });
 

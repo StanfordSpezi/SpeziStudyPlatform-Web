@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -33,21 +33,21 @@ const getOrdinalSuffix = (number: number): string => {
 const capitalize = (text: string) =>
   text.charAt(0).toUpperCase() + text.slice(1);
 
-const eventLabels: Record<StudyLifecycleEvent["type"], string> = {
+const eventLabels = {
   enrollment: "enrollment",
   activation: "activation",
   unenrollment: "unenrollment",
   studyEnd: "study end",
   completedTask: "task completion",
-};
+} satisfies Record<StudyLifecycleEvent["type"], string>;
 
-const policyLabels: Record<AllowedCompletionPolicy, string> = {
+const policyLabels = {
   sameDay: "same day",
   afterStart: "after start",
   sameDayAfterStart: "same day after start",
   duringEvent: "during event",
   anytime: "anytime",
-};
+} satisfies Record<AllowedCompletionPolicy, string>;
 
 const formatFrequency = (definition: ScheduleDefinition): string => {
   if (definition.type === "once") {

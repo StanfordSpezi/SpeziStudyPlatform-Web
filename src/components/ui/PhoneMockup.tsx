@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -30,6 +30,9 @@ const PhoneTopBar = () => {
   );
 };
 
+const PHONE_ASPECT_RATIO = 9 / 16;
+const RESIZE_DEBOUNCE_MS = 10;
+
 interface PhoneMockupProps {
   children?: ReactNode;
 }
@@ -59,9 +62,8 @@ export const PhoneMockup = ({ children }: PhoneMockupProps) => {
       const availableWidth = parentElement.clientWidth - paddingX;
       const availableHeight = parentElement.clientHeight - paddingY;
       const effectiveRatio = availableWidth / availableHeight;
-      const targetRatio = 9 / 16;
 
-      if (effectiveRatio >= targetRatio) {
+      if (effectiveRatio >= PHONE_ASPECT_RATIO) {
         // Limit by height
         innerElement.style.width = "auto";
         innerElement.style.height = "100%";
@@ -87,7 +89,7 @@ export const PhoneMockup = ({ children }: PhoneMockupProps) => {
     let debounceTimeout: NodeJS.Timeout | null = null;
     const observer = new ResizeObserver(() => {
       if (debounceTimeout) clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(adjustAspectRatio, 10);
+      debounceTimeout = setTimeout(adjustAspectRatio, RESIZE_DEBOUNCE_MS);
     });
 
     observer.observe(parentElement);

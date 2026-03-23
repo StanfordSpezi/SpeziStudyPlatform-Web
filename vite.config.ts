@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -14,7 +14,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig(({ mode }) => ({
   root: ".",
-  base: "/spezi-web-study-platform/", // This is necessary for GitHub Pages
+  base: "/SpeziStudyPlatform-Web/", // This is necessary for GitHub Pages
   plugins: [
     tanstackRouter({
       routeToken: "layout",
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
       routeTreeFileHeader: [
         [
           "//",
-          "// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project",
+          "// This source file is part of the Stanford Spezi open source project",
           "//",
           "// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)",
           "//",

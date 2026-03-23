@@ -5,9 +5,9 @@
     "scope": "javascript,typescript,javascriptreact,typescriptreact,dockerfile,yaml,jsonc",
     "body": [
       "$LINE_COMMENT",
-      "$LINE_COMMENT This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project",
+      "$LINE_COMMENT This source file is part of the Stanford Spezi open source project",
       "$LINE_COMMENT",
-      "$LINE_COMMENT SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)",
+      "$LINE_COMMENT SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)",
       "$LINE_COMMENT",
       "$LINE_COMMENT SPDX-License-Identifier: MIT",
       "$LINE_COMMENT",
@@ -21,9 +21,9 @@
     "scope": "html,css,scss,sass,less,markdown,plaintext",
     "body": [
       "$BLOCK_COMMENT_START",
-      "This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project",
+      "This source file is part of the Stanford Spezi open source project",
       "",
-      "SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)",
+      "SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)",
       "",
       "SPDX-License-Identifier: MIT",
       "$BLOCK_COMMENT_END",
