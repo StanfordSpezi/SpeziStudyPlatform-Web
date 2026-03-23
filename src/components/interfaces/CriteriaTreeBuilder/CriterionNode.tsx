@@ -200,9 +200,9 @@ const LeafCriterionNode = ({
   onRemove?: () => void;
   depth: number;
 }) => {
-  if (!isLeafCriterionType(innerCriterion.type)) return null;
-  const leafType = innerCriterion.type;
-  const operators = LEAF_OPERATORS[leafType];
+  const { type } = innerCriterion;
+  if (!isLeafCriterionType(type)) return null;
+  const operators = LEAF_OPERATORS[type];
 
   const handleOperatorChange = (value: string) => {
     if (value === "negated") {
@@ -232,7 +232,7 @@ const LeafCriterionNode = ({
         </SelectContent>
       </Select>
       <Select
-        key={leafType}
+        key={type}
         value={isNegated ? "negated" : "normal"}
         onValueChange={handleOperatorChange}
       >

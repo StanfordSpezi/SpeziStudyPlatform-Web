@@ -22,17 +22,15 @@ export const parseStudyResponse = (
   response: StudyResponse,
   locale = "en-US",
 ): Study => {
-  const localeDetails = response.details[locale] as
-    | StudyDetailContent
-    | undefined;
+  const localeDetails = response.details[locale];
   return {
     id: response.id,
     locales: response.locales,
     icon: response.icon,
-    title: localeDetails?.title ?? "",
-    shortTitle: localeDetails?.shortTitle,
-    explanationText: localeDetails?.explanationText,
-    shortExplanationText: localeDetails?.shortExplanationText,
+    title: localeDetails.title,
+    shortTitle: localeDetails.shortTitle,
+    explanationText: localeDetails.explanationText,
+    shortExplanationText: localeDetails.shortExplanationText,
     participationCriterion: response.participationCriterion,
   };
 };
