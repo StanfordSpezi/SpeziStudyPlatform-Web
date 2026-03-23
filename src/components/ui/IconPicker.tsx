@@ -20,13 +20,11 @@ import {
   type ComponentPropsWithoutRef,
   type ComponentProps,
 } from "react";
-import type { iconsData } from "@/utils/iconsData";
-import { IconSearchGrid } from "./IconGrid";
-
-export type IconData = (typeof iconsData)[number];
+import { IconSearchGrid, type IconData } from "./IconGrid";
 
 interface IconPickerProps
-  extends Omit<
+  extends
+    Omit<
       ComponentPropsWithoutRef<typeof PopoverTrigger>,
       "onSelect" | "onOpenChange"
     >,

@@ -8,10 +8,11 @@
 
 import pkg from "@stanfordspezi/spezi-web-configurations";
 
-const defaultConfig = pkg.getEslintConfig({
+const defaultConfig = pkg.getEslintReactConfig({
   tsconfigRootDir: import.meta.dirname,
 });
 const config = [
+  { ignores: ["src/lib/api/generated/**"] },
   ...defaultConfig,
   // This is necessary to make sure that the import.meta.dirname is available in the config
   // See https://github.com/eslint/eslint/discussions/16037

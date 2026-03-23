@@ -111,6 +111,14 @@ export const IconGrid = ({
     });
   }, [searchTerm, iconsToUse]);
 
+  const iconRows = useMemo(() => {
+    const rows: IconData[][] = [];
+    for (let i = 0; i < filteredIcons.length; i += gridColumns) {
+      rows.push(filteredIcons.slice(i, i + gridColumns));
+    }
+    return rows;
+  }, [filteredIcons]);
+
   const scrollViewRef = useRef<HTMLDivElement>(null);
 
   if (isLoading) {
@@ -135,20 +143,13 @@ export const IconGrid = ({
       style={{ height: rowHeight * visibleRows }}
     >
       <Virtualizer
-        count={Math.ceil(filteredIcons.length / 8)}
+        data={iconRows}
         itemSize={rowHeight}
-        overscan={visibleRows}
         scrollRef={scrollViewRef}
       >
-        {(index) => {
-          return (
-            <IconRow
-              key={index}
-              icons={filteredIcons.slice(index * 8, index * 8 + 8)}
-              onValueChange={onValueChange}
-            />
-          );
-        }}
+        {(row, index) => (
+          <IconRow key={index} icons={row} onValueChange={onValueChange} />
+        )}
       </Virtualizer>
     </ScrollArea>
   );

@@ -19,7 +19,7 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Layers2, LogOut, User } from "lucide-react";
-import { authClient } from "@/lib/authClient";
+import { useAuth } from "@/lib/auth/AuthProvider";
 import { userRetrieveQueryOptions } from "@/lib/queries/user";
 import { notImplementedToast } from "@/utils/notImplementedToast";
 import { UserAvatar } from "./UserAvatar";
@@ -28,11 +28,12 @@ import { UserDropdownSkeleton } from "./UserDropdownSkeleton";
 export const UserDropdown = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const { data: user } = useQuery(userRetrieveQueryOptions({ userId: "me" }));
 
   const handleSignOut = async () => {
-    await authClient.signOut();
     queryClient.clear();
+    await logout();
     await navigate({ to: "/sign-in" });
   };
 

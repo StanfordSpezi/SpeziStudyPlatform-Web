@@ -12,7 +12,6 @@ import { cn } from "@/utils/cn";
 interface FieldLabelProps extends Omit<ComponentProps<"div">, "title"> {
   title: ReactNode;
   description?: ReactNode;
-  className?: string;
 }
 
 export const FieldLabel = ({

@@ -11,7 +11,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { dedent } from "./src/utils/dedent";
 
 export default defineConfig(({ mode }) => ({
   root: ".",
@@ -21,15 +20,15 @@ export default defineConfig(({ mode }) => ({
       routeToken: "layout",
       routeFilePrefix: "~",
       routeTreeFileHeader: [
-        dedent`
-        //
-        // This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
-        //
-        // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
-        //
-        // SPDX-License-Identifier: MIT
-        //
-        `,
+        [
+          "//",
+          "// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project",
+          "//",
+          "// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)",
+          "//",
+          "// SPDX-License-Identifier: MIT",
+          "//",
+        ].join("\n"),
         "/* prettier-ignore-start */",
         "/* eslint-disable */",
         "// @ts-nocheck",
@@ -45,6 +44,14 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  server: {
+    proxy: {
+      "/api/v0": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
     },
   },
 }));

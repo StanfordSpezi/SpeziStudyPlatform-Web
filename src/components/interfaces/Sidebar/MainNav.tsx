@@ -51,28 +51,38 @@ const navBarItems: NavBarItem[] = [
     id: "home",
     title: "Home",
     icon: Home,
-    linkOptions: { to: "/$team/$study" },
+    linkOptions: { to: "/$group/$study" },
   },
   {
     id: "configuration",
     title: "Configuration",
     icon: Bolt,
-    linkOptions: { to: "/$team/$study/configuration" },
+    linkOptions: { to: "/$group/$study/configuration" },
     subMenu: [
       {
-        id: "basic-information",
-        title: "Basic Information",
-        linkOptions: { to: "/$team/$study/configuration/basic-information" },
+        id: "general",
+        title: "General",
+        linkOptions: { to: "/$group/$study/configuration/general" },
+      },
+      {
+        id: "consent",
+        title: "Consent",
+        onClick: () => notImplementedToast("Consent"),
       },
       {
         id: "enrollment",
         title: "Enrollment",
-        linkOptions: { to: "/$team/$study/configuration/enrollment" },
+        onClick: () => notImplementedToast("Enrollment"),
+      },
+      {
+        id: "participation",
+        title: "Participation",
+        linkOptions: { to: "/$group/$study/configuration/participation" },
       },
       {
         id: "components",
         title: "Components",
-        linkOptions: { to: "/$team/$study/configuration/components" },
+        linkOptions: { to: "/$group/$study/configuration/components" },
         fuzzy: true,
       },
     ],
@@ -99,10 +109,10 @@ const MainNavButton = ({
   isSubMenu?: boolean;
 }) => {
   const matchRoute = useMatchRoute();
-  const Comp = isSubMenu ? SidebarMenuSubButton : SidebarMenuButton;
+  const MenuButton = isSubMenu ? SidebarMenuSubButton : SidebarMenuButton;
   if (item.linkOptions) {
     return (
-      <Comp
+      <MenuButton
         asChild
         tooltip={item.title}
         isActive={!!matchRoute({ to: item.linkOptions.to, fuzzy: item.fuzzy })}
@@ -111,15 +121,15 @@ const MainNavButton = ({
           {item.icon && <item.icon className="opacity-80" />}
           <span>{item.title}</span>
         </Link>
-      </Comp>
+      </MenuButton>
     );
   }
 
   return (
-    <Comp tooltip={item.title} onClick={item.onClick}>
+    <MenuButton tooltip={item.title} onClick={item.onClick}>
       {item.icon && <item.icon className="opacity-80" />}
       <span>{item.title}</span>
-    </Comp>
+    </MenuButton>
   );
 };
 

@@ -64,21 +64,14 @@ cp .env.example .env
 npm install
 ```
 
-## 6. Start the development servers
+## 6. Start the development server
 
 ```bash
 npm run dev
 ```
 
-This command starts:
-
-- The UI at http://localhost:3000
-- The development API server at http://localhost:3001
+This starts the UI at http://localhost:3000 (Vite proxies API requests to the backend at localhost:8080).
 
 ## 7. Open the app
 
 Open your browser and go to http://localhost:3000
-
-## 8. Open the API reference (optional)
-
-Open the interactive API docs at http://localhost:3001/scalar

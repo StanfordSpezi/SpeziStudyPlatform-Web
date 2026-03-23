@@ -1,0 +1,161 @@
+~~checking the openapi file especially the patch request is there something missing in the UI? except for the enrollment and the consent~~
+
+~~are there more dead pages not really accessbile?~~
+
+~~how does the client.ts work? how can we do actual requests to the server? the types are just the types right? cant we also automate the queries?~~
+
+~~playwright Fixtures?~~
+
+~~env zod thingy~~
+
+
+
+
+Senior Code Review: Spezi Web Study Platform
+
+  Overall, this is a well-architected project with modern tooling, strong TypeScript usage, and good separation of concerns. Below are my findings organized by severity.
+
+  ---
+  1. Critical Issues
+
+  No Error Boundaries on Routes
+
+  None of your routes define an errorComponent. If any beforeLoad query fails (network error, 404, 500), users see a blank page or an uncaught exception — not a friendly error screen.
+
+  Affected routes: Every route with beforeLoad data fetching — ~(dashboard)/~index.tsx, ~$group/~index.tsx, ~$group/$study/~layout.tsx, etc.
+
+  Fix: Add errorComponent to all routes that fetch data:
+  export const Route = createFileRoute("...")({
+    beforeLoad: async () => { ... },
+    component: MyComponent,
+    errorComponent: ({ error }) => <ErrorPage error={error} />,
+  });
+
+  Unsafe Locale Access in transforms.ts
+
+  src/lib/api/transforms.ts:24 — response.details["en-US"] is destructured directly without a null check. If the backend ever returns a response missing the en-US locale key, this throws a
+  runtime error.
+
+  Generic Error Handling in All Mutations
+
+  Every mutation across src/lib/queries/component.ts and study.ts uses the same generic toast.error() regardless of HTTP status. A 403 (Forbidden) looks identical to a 500 (Server Error) to
+  the user. Differentiate by status code for meaningful feedback.
+
+  ---
+  2. High Priority
+
+  Query Invalidation Is Too Broad
+
+  src/lib/queries/component.ts — All component mutations invalidate componentsQueryKeys.all, which refetches every component + schedule for every component. For studies with many components,
+  this is wasteful and causes UI flicker.
+
+  Better: Invalidate only the specific query keys affected:
+  - Component create/delete → invalidate componentsQueryKeys.list(studyId)
+  - Schedule update → invalidate scheduleQueryKeys.retrieve(componentId) only
+
+  No Route-Level Authorization
+
+  Routes accept any $group/$study URL parameter without verifying the user has access. While the API will reject unauthorized requests, the route still renders before that happens. Add access
+   validation in beforeLoad.
+
+  Missing Retry Strategy Configuration
+
+  src/lib/queryClient.ts — Uses default React Query retry behavior (3 retries for all failures). This means 403/404 errors are retried pointlessly. Configure:
+  retry: (failureCount, error) => {
+    if (error instanceof ApiError && error.status < 500) return false;
+    return failureCount < 3;
+  },
+
+  ScheduleDialog.tsx Is 493 Lines
+
+  A single monolithic component handling form rendering, three mutations (create/update/delete), a confirmation dialog, and conditional scheduling logic. Should be broken into sub-components
+  and a custom hook.
+
+  ---
+  3. Medium Priority
+
+  Code Duplication Across Form Routes
+
+  Three form routes (basic-information.tsx, enrollment.tsx, components/$componentType/new.tsx) duplicate:
+  - The meta+enter hotkey setup
+  - The SaveButton + NavigationBlocker boilerplate
+  - The mutation → toast → invalidate pattern
+
+  Extract a useFormHotkeys(handleSubmit) hook and a FormActions wrapper component.
+
+  Sidebar.tsx Is 725 Lines
+
+  src/components/interfaces/Sidebar/Sidebar.tsx exports 15+ components from a single file. Split into SidebarProvider.tsx, SidebarMenu.tsx, and SidebarLayout.tsx.
+
+  Duplicated Sign-Out Logic
+
+  UserDropdown.tsx and MinimalUserDropdown.tsx both implement identical handleSignOut functions. Extract to a useSignOut() hook.
+
+  useBasicInfoForm Doesn't Sync External Changes
+
+  src/routes/.../lib/useBasicInfoForm.ts:32-38 — Form initializes with study as defaultValues, but if the query updates after mount, the form doesn't reset. Compare with useComponentForm.ts
+  which properly uses useEffect to reset on data changes.
+
+  Incomplete Error State Handling in Components
+
+  Components like GroupSelector.tsx:22 and StudySelector.tsx:27 only destructure data from useQuery, ignoring isError/error. Failed queries show as perpetual loading states instead of error
+  UI.
+
+  Loose Type Cast in useComponentForm.ts:235
+
+  component as unknown as Record<string, unknown>
+  This bypasses all type checking. If the backend changes field names, failures will be silent.
+
+  ---
+  4. Low Priority / Polish
+
+  ┌───────────────────────────────────────────────────────────┬────────────────────────────────┬───────────────────────────────────────────┐
+  │                           Issue                           │            Location            │                   Note                    │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Sidebar.tsx exported from barrel — 725 lines              │ components/interfaces/Sidebar/ │ Split file                                │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Global counter for clause IDs                             │ LogicGroupInput/hooks.ts:22    │ Use crypto.randomUUID()                   │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Token claims not validated at runtime                     │ queries/user.ts:40-55          │ Add Zod schema for tokenParsed            │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Auth middleware doesn't catch getAccessToken() throws     │ api/client.ts:48               │ Wrap in try-catch                         │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ DurationInput doesn't sync external value prop changes    │ DurationInput.tsx:100-102      │ Add useEffect for controlled usage        │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Keycloak singleton never resets on init failure           │ auth/keycloak.ts:18-25         │ Add recovery mechanism                    │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Mutation code duplication in component.ts                 │ queries/component.ts           │ Extract helper factory per component type │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Playwright config references missing dev:ui script        │ playwright.config.ts           │ Add script or fix reference               │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ Node engine constraint says v24, env is v22               │ package.json                   │ Align version                             │
+  ├───────────────────────────────────────────────────────────┼────────────────────────────────┼───────────────────────────────────────────┤
+  │ studyListQueryOptions returns [] instead of using enabled │ queries/study.ts:43            │ Use enabled: !!params.groupId             │
+  └───────────────────────────────────────────────────────────┴────────────────────────────────┴───────────────────────────────────────────┘
+
+  ---
+  5. What's Done Well
+
+  - Modern, current stack — React 19, Vite 7, TypeScript 5, Tailwind 4, TanStack Router/Query. No outdated dependencies.
+  - Type-safe API layer — openapi-fetch + auto-generated types from the backend spec prevents schema drift.
+  - Clean project structure — Clear separation into ui/, interfaces/, layouts/, lib/, routes/, utils/.
+  - Good accessibility — Proper ARIA attributes, keyboard navigation, semantic HTML, sr-only labels throughout.
+  - Solid custom hooks — useIsScrolled uses requestAnimationFrame and passive listeners; useTimedFlag has proper cleanup.
+  - Consistent conventions — SPDX headers, naming patterns, centralized ESLint/Prettier config from org package.
+  - Auth architecture — Keycloak integration with JWT middleware is clean and well-separated.
+  - Component composition — MultiSelect, LogicGroupInput, CriteriaTreeBuilder follow proper composition patterns with context.
+
+  ---
+  Recommended Action Plan
+
+  ┌─────────────────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─────────┐
+  │        Phase        │                                                          Focus                                                           │ Effort  │
+  ├─────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────┤
+  │ 1 — Reliability     │ Add error boundaries to all data-fetching routes; fix unsafe en-US access; configure retry strategy                      │ ~1 day  │
+  ├─────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────┤
+  │ 2 — UX              │ Differentiate error messages by status code; handle error states in selectors/headers; fix form sync in useBasicInfoForm │ ~1 day  │
+  ├─────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────┤
+  │ 3 — Maintainability │ Extract form duplication to hooks; split ScheduleDialog and Sidebar; deduplicate sign-out logic                          │ ~2 days │
+  ├─────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────┤
+  │ 4 — Polish          │ Tighten query invalidation; validate token claims; fix Playwright config; align Node version                             │ ~1 day  │
+  └─────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────┘

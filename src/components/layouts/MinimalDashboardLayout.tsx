@@ -10,11 +10,13 @@ import type { ReactNode } from "react";
 import { Header } from "../interfaces/Header/Header";
 import { SidebarProvider } from "../interfaces/Sidebar/Sidebar";
 
-interface DashboardLayoutProps {
-  children: ReactNode | ReactNode[];
+interface MinimalDashboardLayoutProps {
+  children: ReactNode;
 }
 
-export const MinimalDashboardLayout = ({ children }: DashboardLayoutProps) => {
+export const MinimalDashboardLayout = ({
+  children,
+}: MinimalDashboardLayoutProps) => {
   return (
     <SidebarProvider className="flex flex-col">
       <Header />

@@ -25,8 +25,10 @@ import { useEffect, type ComponentProps } from "react";
 import { Markdown } from "tiptap-markdown";
 import { cn } from "@/utils/cn";
 
-interface ToggleProps
-  extends Omit<ComponentProps<typeof Button>, "variant" | "size" | "onClick"> {
+interface ToggleProps extends Omit<
+  ComponentProps<typeof Button>,
+  "variant" | "size" | "onClick"
+> {
   pressed?: boolean;
   onPressedChange?: () => void;
 }

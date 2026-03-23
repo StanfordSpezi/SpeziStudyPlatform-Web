@@ -9,8 +9,6 @@
 import type { ComponentProps } from "react";
 import { cn } from "@/utils/cn";
 
-interface DashedSeparatorProps extends ComponentProps<"div"> {}
-
 /**
  * Renders a horizontal dashed separator line. Use this component instead of Tailwind's `border-b border-dashed`
  * when you need more control over the appearance of the dashes, such as customizing the dash length, color or spacing.
@@ -24,7 +22,7 @@ export const DashedSeparator = ({
   className,
   style,
   ...props
-}: DashedSeparatorProps) => {
+}: ComponentProps<"div">) => {
   return (
     <div
       aria-hidden="true"

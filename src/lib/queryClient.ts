@@ -8,11 +8,16 @@
 
 import { toast } from "@stanfordspezi/spezi-web-design-system";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
+import { ApiError } from "./api/client";
+
+const isUnauthorized = (error: Error) =>
+  (error instanceof ApiError && error.status === 401) ||
+  error.message === "Unauthorized";
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
-      if (error.message === "Unauthorized") {
+      if (isUnauthorized(error)) {
         // Handle unauthorized errors globally by showing a toast that prompts the user to sign in again.
         // This case is typically triggered when the user is authenticated but their session has expired.
         toast.error("Your session has expired. Please sign in again.", {

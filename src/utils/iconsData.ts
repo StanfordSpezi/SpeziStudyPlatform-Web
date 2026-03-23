@@ -6,13 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-export enum IconCategory {
-  Text = "text",
-  Design = "design",
-  Layout = "layout",
-  Navigation = "navigation",
-  Social = "social",
-}
 export const iconsData: Array<{
   name: string;
   categories: string[];

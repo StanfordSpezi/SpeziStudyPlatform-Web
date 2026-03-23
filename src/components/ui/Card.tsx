@@ -9,9 +9,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
-interface CardProps extends ComponentProps<"div"> {}
-
-export const Card = ({ className, ...props }: CardProps) => {
+export const Card = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       className={cn(

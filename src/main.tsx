@@ -11,6 +11,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorLayout } from "./components/layouts/ErrorLayout";
+import { AuthProvider } from "./lib/auth/AuthProvider";
 import { queryClient } from "./lib/queryClient";
 import { routeTree } from "./routeTree.gen";
 import "./styles/index.css";
@@ -39,9 +40,11 @@ if (rootElement && !rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </AuthProvider>
     </StrictMode>,
   );
 }

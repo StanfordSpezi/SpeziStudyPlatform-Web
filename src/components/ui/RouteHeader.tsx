@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { cn } from "@stanfordspezi/spezi-web-design-system";
 import { createLink, type LinkComponentProps } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import {
@@ -16,6 +15,7 @@ import {
   type RefObject,
 } from "react";
 import { useResizeObserver } from "usehooks-ts";
+import { cn } from "@/utils/cn";
 import { useIsScrolled } from "@/utils/useIsScrolled";
 import { DashedSeparator } from "./DashedSeparator";
 
@@ -72,13 +72,11 @@ export const RouteHeader = ({
   );
 };
 
-interface BasicRouteHeaderBackLinkProps extends ComponentProps<"a"> {}
-
 const BasicRouteHeaderBackLink = ({
   className,
   children = "Back",
   ...props
-}: BasicRouteHeaderBackLinkProps) => {
+}: ComponentProps<"a">) => {
   return (
     <a
       className={cn(

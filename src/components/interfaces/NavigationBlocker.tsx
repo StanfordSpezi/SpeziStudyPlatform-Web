@@ -34,11 +34,10 @@ export const NavigationBlocker = ({ shouldBlock }: NavigationBlockerProps) => {
     <Dialog open={status === "blocked"} onOpenChange={reset}>
       <DialogContent className="max-w-sm">
         <DialogHeader className="items-center sm:items-start">
-          <FeaturedIconContainer className="border-border-tertiary mb-4 size-8 rounded-lg shadow-xs">
-            <div className="grid size-full place-items-center">
-              <CircleAlert className="text-text-tertiary size-4 opacity-80" />
-            </div>
-          </FeaturedIconContainer>
+          <FeaturedIconContainer
+            icon={CircleAlert}
+            className="border-border-tertiary mb-4 size-8 rounded-lg shadow-xs"
+          />
           <DialogTitle>Leave this page?</DialogTitle>
           <DialogDescription>
             You have unsaved changes that will be lost.

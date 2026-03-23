@@ -57,8 +57,9 @@ export const Command = ({
   />
 );
 
-interface CommandDialogContentProps
-  extends ComponentProps<typeof DialogContent> {
+interface CommandDialogContentProps extends ComponentProps<
+  typeof DialogContent
+> {
   /**
    * Accessible title announced by screen readers. Visually hidden.
    * @default "Command Palette"

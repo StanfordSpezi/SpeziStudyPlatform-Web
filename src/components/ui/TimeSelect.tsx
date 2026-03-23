@@ -20,13 +20,15 @@ const minuteValues = [0, 30] as const;
 
 type TimeSelectMinute = (typeof minuteValues)[number];
 
-interface TimeSelectValue {
+export interface TimeSelectValue {
   hours: number;
   minutes: TimeSelectMinute;
 }
 
-interface TimeSelectProps
-  extends Omit<ComponentProps<typeof Select>, "value" | "onChange"> {
+export interface TimeSelectProps extends Omit<
+  ComponentProps<typeof Select>,
+  "value" | "onChange" | "children"
+> {
   id?: string;
   value?: TimeSelectValue | null;
   onChange: (value: TimeSelectValue) => void;
@@ -34,18 +36,10 @@ interface TimeSelectProps
   className?: string;
 }
 
-const formatOptionValue = (hours: number, minutes: TimeSelectMinute) => {
+const formatTime = (hours: number, minutes: TimeSelectMinute) => {
   const hoursString = hours.toString().padStart(2, "0");
   const minutesString = minutes.toString().padStart(2, "0");
   return `${hoursString}:${minutesString}`;
-};
-
-const formatOptionLabel = (hours: number, minutes: TimeSelectMinute) => {
-  const period = hours < 12 ? "AM" : "PM";
-  const twelveHour = hours % 12 === 0 ? 12 : hours % 12;
-  const minuteLabel = minutes === 0 ? "00" : "30";
-
-  return `${twelveHour}:${minuteLabel} ${period}`;
 };
 
 const timeOptions: Array<{
@@ -57,9 +51,10 @@ const timeOptions: Array<{
 
 for (let hour = 0; hour < 24; hour += 1) {
   for (const minutes of minuteValues) {
+    const formattedTime = formatTime(hour, minutes);
     timeOptions.push({
-      value: formatOptionValue(hour, minutes),
-      label: formatOptionLabel(hour, minutes),
+      value: formattedTime,
+      label: formattedTime,
       hours: hour,
       minutes,
     });
@@ -105,7 +100,7 @@ export const TimeSelect = ({
       return undefined;
     }
 
-    return formatOptionValue(value.hours, value.minutes);
+    return formatTime(value.hours, value.minutes);
   };
 
   return (

@@ -9,7 +9,6 @@
 import {
   Badge,
   Button,
-  cn,
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
@@ -26,6 +25,7 @@ import {
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from "react";
+import { cn } from "@/utils/cn";
 import {
   Command,
   CommandEmpty,
@@ -104,20 +104,20 @@ export const MultiSelect = ({
   const [items, setItems] = useState(new Map<string, ReactNode>());
 
   const toggleValue = (value: string) => {
-    const newSet = new Set(selectedValues);
-    if (newSet.has(value)) {
-      newSet.delete(value);
+    const updatedSelection = new Set(selectedValues);
+    if (updatedSelection.has(value)) {
+      updatedSelection.delete(value);
     } else {
-      newSet.add(value);
+      updatedSelection.add(value);
     }
-    setSelectedValues(newSet);
-    onValuesChange?.(Array.from(newSet));
+    setSelectedValues(updatedSelection);
+    onValuesChange?.(Array.from(updatedSelection));
   };
 
   const onItemAdded = (value: string, label: ReactNode) => {
-    setItems((prev) => {
-      if (prev.get(value) === label) return prev;
-      return new Map(prev).set(value, label);
+    setItems((previousItems) => {
+      if (previousItems.get(value) === label) return previousItems;
+      return new Map(previousItems).set(value, label);
     });
   };
 
@@ -139,9 +139,6 @@ export const MultiSelect = ({
   );
 };
 
-interface MultiSelectTriggerProps
-  extends Omit<ComponentPropsWithoutRef<typeof Button>, "size" | "variant"> {}
-
 /**
  * Clickable trigger element that opens the selection popover.
  *
@@ -158,7 +155,7 @@ export const MultiSelectTrigger = ({
   className,
   children,
   ...props
-}: MultiSelectTriggerProps) => {
+}: Omit<ComponentPropsWithoutRef<typeof Button>, "size" | "variant">) => {
   const { open } = useMultiSelectContext();
 
   return (
@@ -183,8 +180,10 @@ export const MultiSelectTrigger = ({
   );
 };
 
-interface MultiSelectValueProps
-  extends Omit<ComponentPropsWithoutRef<"div">, "children"> {
+interface MultiSelectValueProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "children"
+> {
   /**
    * Placeholder text to show when no items are selected.
    */
@@ -235,34 +234,34 @@ export const MultiSelectValue = ({
 
     const containerElement = valueRef.current;
     const overflowElement = overflowRef.current;
-    const items = containerElement.querySelectorAll<HTMLElement>(
+    const badgeElements = containerElement.querySelectorAll<HTMLElement>(
       "[data-selected-item]",
     );
 
     if (overflowElement != null) overflowElement.style.display = "none";
-    items.forEach((child) => child.style.removeProperty("display"));
-    let amount = 0;
-    for (let i = items.length - 1; i >= 0; i--) {
-      const child = items[i];
+    badgeElements.forEach((element) => element.style.removeProperty("display"));
+    let hiddenCount = 0;
+    for (let i = badgeElements.length - 1; i >= 0; i--) {
+      const element = badgeElements[i];
       if (containerElement.scrollWidth <= containerElement.clientWidth) {
         break;
       }
-      amount = items.length - i;
-      child.style.display = "none";
+      hiddenCount = badgeElements.length - i;
+      element.style.display = "none";
       overflowElement?.style.removeProperty("display");
     }
-    setOverflowAmount(amount);
+    setOverflowAmount(hiddenCount);
   }, []);
 
   useLayoutEffect(() => {
     checkOverflow();
   }, [selectedValues, checkOverflow, shouldWrap]);
 
-  const handleResize = (node: HTMLDivElement) => {
-    valueRef.current = node;
+  const handleResize = (element: HTMLDivElement) => {
+    valueRef.current = element;
 
     const observer = new ResizeObserver(checkOverflow);
-    observer.observe(node);
+    observer.observe(element);
 
     return () => {
       observer.disconnect();
@@ -325,8 +324,10 @@ export const MultiSelectValue = ({
   );
 };
 
-interface MultiSelectContentProps
-  extends Omit<ComponentPropsWithoutRef<typeof Command>, "children"> {
+interface MultiSelectContentProps extends Omit<
+  ComponentPropsWithoutRef<typeof Command>,
+  "children"
+> {
   /**
    * Enable or disable the search input. Accepts three possible values:
    * - `true`: shows a search input with default placeholder and empty message.
@@ -339,33 +340,23 @@ interface MultiSelectContentProps
   children: ReactNode;
 }
 
-const isBoolean = (value: unknown): value is boolean => {
-  return typeof value === "boolean";
-};
-
-const isUndefined = (value: unknown): value is undefined => {
-  return typeof value === "undefined";
-};
-
 /**
  * Transform the `search` prop into a normalized object with default values for
- * placeholder and emptyMessage. Returns null if search is false.
+ * placeholder and emptyMessage. Returns null if search is disabled.
  */
 const normalizeSearchProp = (search: MultiSelectContentProps["search"]) => {
-  const defaultSearchParams = {
+  if (search === false) return null;
+
+  const defaults = {
     placeholder: "Search...",
     emptyMessage: "No results found.",
   };
 
-  if (isUndefined(search)) return defaultSearchParams;
-  if (isBoolean(search)) {
-    if (search) return defaultSearchParams;
-    return null;
-  }
+  if (search === undefined || search === true) return defaults;
 
   return {
-    placeholder: search.placeholder ?? defaultSearchParams.placeholder,
-    emptyMessage: search.emptyMessage ?? defaultSearchParams.emptyMessage,
+    placeholder: search.placeholder ?? defaults.placeholder,
+    emptyMessage: search.emptyMessage ?? defaults.emptyMessage,
   };
 };
 
@@ -416,8 +407,10 @@ export const MultiSelectContent = ({
   );
 };
 
-interface MultiSelectItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof CommandItem>, "value"> {
+interface MultiSelectItemProps extends Omit<
+  ComponentPropsWithoutRef<typeof CommandItem>,
+  "value"
+> {
   /**
    * The unique value for this item within the selection.
    */

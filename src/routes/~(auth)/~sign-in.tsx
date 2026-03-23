@@ -6,31 +6,16 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { Button, toast } from "@stanfordspezi/spezi-web-design-system";
+import { Button } from "@stanfordspezi/spezi-web-design-system";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
 import { BrandIconGroup } from "@/components/interfaces/BrandIconGroup";
-import { authClient } from "@/lib/authClient";
-import { userFixtures } from "@/server/database/entities/user/fixtures";
+import { getKeycloak } from "@/lib/auth/keycloak";
 
 const SignInRoute = () => {
-  const navigate = Route.useNavigate();
-  const search = Route.useSearch();
-
-  const handleSignIn = async () => {
-    const user =
-      userFixtures.find(({ role }) => role === "admin") ?? userFixtures[0];
-    const { error } = await authClient.signIn.email({
-      email: user.email,
-      password: user.password,
-    });
-
-    if (error) {
-      toast.error(error.message, { duration: 5000 });
-      return;
-    }
-
-    await navigate({ to: search.redirect ?? "/" });
+  const handleSignIn = () => {
+    const keycloak = getKeycloak();
+    void keycloak.login();
   };
 
   return (
@@ -68,17 +53,12 @@ export const Route = createFileRoute("/(auth)/sign-in")({
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
-  beforeLoad: async ({ search }) => {
+  beforeLoad: ({ search }) => {
     // Check if the user is already authenticated
     // if so, redirect them to the specified path or home
-    const { data, error } = await authClient.getSession();
-
-    if (error && error.status !== 401) {
-      throw new Error(error.message);
-    }
-    if (data?.session) {
-      // User is authenticated, redirect them to the specified path or home
-      return redirect({ to: search.redirect ?? "/" });
+    const keycloak = getKeycloak();
+    if (keycloak.authenticated) {
+      throw redirect({ to: search.redirect ?? "/" });
     }
   },
 });

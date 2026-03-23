@@ -6,8 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { cn } from "@stanfordspezi/spezi-web-design-system";
 import { type ReactNode } from "react";
+import { cn } from "@/utils/cn";
 import { BlueprintContainer } from "../ui/BlueprintContainer";
 import { PhoneMockup } from "../ui/PhoneMockup";
 

@@ -17,15 +17,13 @@ import {
   DialogTrigger,
   Field,
   Input,
-  parseUnknownError,
-  toast,
   useForm,
 } from "@stanfordspezi/spezi-web-design-system";
+import { useNavigate } from "@tanstack/react-router";
 import { ListPlus } from "lucide-react";
 import { type ReactNode } from "react";
 import { z } from "zod";
 import { useCreateStudyMutation } from "@/lib/queries/study";
-import type { Study } from "@/server/database/entities/study/schema";
 import { FeaturedIconContainer } from "../ui/FeaturedIconContainer";
 import { FieldLabel } from "../ui/FieldLabel";
 
@@ -34,14 +32,15 @@ const formSchema = z.object({
 });
 
 interface NewStudyDialogContentProps {
-  teamId: string;
-  onSuccess?: (study: Study) => Promise<void> | void;
+  groupId: string;
+  onSuccess?: () => Promise<void> | void;
 }
 
 export const NewStudyDialogContent = ({
-  teamId,
+  groupId,
   onSuccess,
 }: NewStudyDialogContentProps) => {
+  const navigate = useNavigate();
   const createStudy = useCreateStudyMutation();
   const form = useForm({
     formSchema,
@@ -49,37 +48,25 @@ export const NewStudyDialogContent = ({
   });
 
   const handleSubmit = form.handleSubmit(async ({ title }) => {
-    try {
-      const study = await createStudy.mutateAsync({
-        teamId,
-        title,
-        shortTitle: null,
-        icon: null,
-        explanation: null,
-        shortExplanation: null,
-        isPublished: false,
-        enrollmentPeriod: null,
-        studyDuration: null,
-        isPrivateStudy: false,
-        participationCriteria: null,
-      });
-      await onSuccess?.(study);
-    } catch (error) {
-      toast.error("Failed to create study.", {
-        description: parseUnknownError(error),
-      });
-    }
+    const study = await createStudy.mutateAsync({
+      path: { groupId },
+      body: { title, icon: "heart" },
+    });
+    await navigate({
+      to: "/$group/$study",
+      params: { group: groupId, study: study.id },
+    });
+    await onSuccess?.();
   });
 
   return (
     <DialogContent className="max-w-md">
       <form onSubmit={handleSubmit}>
         <DialogHeader className="items-center sm:items-start">
-          <FeaturedIconContainer className="border-border-tertiary mb-4 size-8 rounded-lg shadow-xs">
-            <div className="grid size-full place-items-center">
-              <ListPlus className="text-text-tertiary size-4 opacity-80" />
-            </div>
-          </FeaturedIconContainer>
+          <FeaturedIconContainer
+            icon={ListPlus}
+            className="border-border-tertiary mb-4 size-8 rounded-lg shadow-xs"
+          />
           <DialogTitle>Create a new study</DialogTitle>
           <DialogDescription>
             Enter a title to get started. You can always change this later.
@@ -111,15 +98,15 @@ export const NewStudyDialogContent = ({
 };
 
 interface NewStudyDialogProps {
-  teamId: string;
+  groupId: string;
   children: ReactNode;
 }
 
-export const NewStudyDialog = ({ children, teamId }: NewStudyDialogProps) => {
+export const NewStudyDialog = ({ children, groupId }: NewStudyDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <NewStudyDialogContent teamId={teamId} />
+      <NewStudyDialogContent groupId={groupId} />
     </Dialog>
   );
 };

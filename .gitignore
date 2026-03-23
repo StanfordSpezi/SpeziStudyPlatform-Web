@@ -34,6 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# auto-generated API client
+src/lib/api/generated/
+
 # lint
 eslint_report.json
 

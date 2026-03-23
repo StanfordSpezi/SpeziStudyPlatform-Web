@@ -12,8 +12,10 @@ import { type ComponentProps } from "react";
 import { cn } from "@/utils/cn";
 import { useTimedFlag } from "@/utils/useTimedFlag";
 
-interface SaveButtonProps
-  extends Omit<ComponentProps<typeof Button>, "children"> {
+interface SaveButtonProps extends Omit<
+  ComponentProps<typeof Button>,
+  "children"
+> {
   isSuccess?: boolean;
   successTimeout?: number;
   isError?: boolean;
