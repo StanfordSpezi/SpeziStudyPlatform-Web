@@ -16,12 +16,12 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 8 * * 1'
+    - cron: "0 8 * * 1"
 
 jobs:
   analyze:
     name: Analyze
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     permissions:
       security-events: write
       packages: read

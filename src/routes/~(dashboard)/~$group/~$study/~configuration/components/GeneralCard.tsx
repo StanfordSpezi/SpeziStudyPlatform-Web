@@ -8,12 +8,13 @@
 
 import { useParams } from "@tanstack/react-router";
 import { DynamicIcon, type IconName } from "lucide-react/dynamic";
+import type { StudyResponse } from "@/lib/api/generated/types.gen";
 import { KeyValueCard } from "@/components/interfaces/KeyValueCard";
 import { EditButtonLink } from "@/components/ui/EditButton";
-import type { Study } from "@/lib/api/types";
+import { useLocale } from "@/lib/locale";
 
 interface GeneralCardProps {
-  study?: Study;
+  study?: StudyResponse;
   isLoading?: boolean;
 }
 
@@ -21,6 +22,9 @@ export const GeneralCard = ({ study, isLoading }: GeneralCardProps) => {
   const params = useParams({
     from: "/(dashboard)/$group/$study/configuration/",
   });
+  const { locale } = useLocale();
+  const details = study?.details[locale];
+
   return (
     <KeyValueCard
       title="General"
@@ -41,12 +45,12 @@ export const GeneralCard = ({ study, isLoading }: GeneralCardProps) => {
           key: "Title",
           tooltip:
             "The title of your study, which will be displayed to participants.",
-          value: study?.title,
+          value: details?.title,
         },
         {
           key: "Short title",
           tooltip: "Used in tight spaces where the full title won't fit.",
-          value: study?.shortTitle,
+          value: details?.shortTitle,
         },
         {
           key: "Icon",
@@ -62,12 +66,12 @@ export const GeneralCard = ({ study, isLoading }: GeneralCardProps) => {
         {
           key: "Explanation",
           tooltip: "This helps participants decide if they want to join.",
-          value: study?.explanationText,
+          value: details?.explanationText,
         },
         {
           key: "Short explanation",
           tooltip: "A short summary for preview cards and search results.",
-          value: study?.shortExplanationText,
+          value: details?.shortExplanationText,
         },
       ]}
     />

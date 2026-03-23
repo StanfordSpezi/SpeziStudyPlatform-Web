@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { RouteHeader } from "@/components/ui/RouteHeader";
 import { componentListQueryOptions } from "@/lib/queries/component";
-import { studyRetrieveQueryOptions } from "@/lib/queries/study";
+import { studyResponseQueryOptions } from "@/lib/queries/study";
 import { ComponentsCard } from "./components/ComponentsCard/ComponentsCard";
 import { GeneralCard } from "./components/GeneralCard";
 import { ParticipationCriteriaCard } from "./components/ParticipationCriteriaCard";
@@ -18,7 +18,7 @@ import { ParticipationCriteriaCard } from "./components/ParticipationCriteriaCar
 const StudyConfigurationRoute = () => {
   const params = Route.useParams();
   const { data: study, ...studyQuery } = useQuery(
-    studyRetrieveQueryOptions({ studyId: params.study }),
+    studyResponseQueryOptions({ studyId: params.study }),
   );
   const { data: components, ...componentQuery } = useQuery(
     componentListQueryOptions({ studyId: params.study }),

@@ -10,10 +10,10 @@ import { useParams } from "@tanstack/react-router";
 import { CriteriaDisplay } from "@/components/interfaces/CriteriaTreeBuilder";
 import { Card, CardHeader } from "@/components/ui/Card";
 import { EditButtonLink } from "@/components/ui/EditButton";
-import type { Study } from "@/lib/api/types";
+import type { StudyResponse } from "@/lib/api/generated/types.gen";
 
 interface ParticipationCriteriaCardProps {
-  study?: Study;
+  study?: StudyResponse;
   isLoading?: boolean;
 }
 

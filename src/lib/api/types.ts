@@ -6,24 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
-import type { ParticipationCriterion } from "./generated/types.gen";
-
 export type { GroupResponse as Group } from "./generated/types.gen";
 export type { Component as ComponentSummary } from "./generated/types.gen";
-
-/**
- * Flat, locale-resolved study shape used throughout the UI.
- */
-export interface Study {
-  id: string;
-  locales: string[];
-  icon: string;
-  title: string;
-  shortTitle?: string | null;
-  explanationText?: string | null;
-  shortExplanationText?: string | null;
-  participationCriterion?: ParticipationCriterion | null;
-}
 
 // --- Components ---
 
@@ -56,12 +40,3 @@ export const normalizeComponentType = (raw: string): ComponentType => {
       throw new Error(`Unknown component type: "${raw}"`);
   }
 };
-
-// --- Users ---
-
-export interface User {
-  name: string;
-  email: string;
-  imageUrl?: string;
-  role: "admin" | "user";
-}

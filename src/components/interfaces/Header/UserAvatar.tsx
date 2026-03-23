@@ -7,14 +7,12 @@
 //
 
 import { Avatar } from "@stanfordspezi/spezi-web-design-system";
-import { Shield } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 interface UserAvatarProps {
   user: {
     name: string;
     imageUrl?: string;
-    role: "user" | "admin";
   };
   /**
    * To style the sizing of the avatar and badge, you need to set the
@@ -39,19 +37,6 @@ export const UserAvatar = ({ user, className }: UserAvatarProps) => {
         <div className="flex-center bg-background size-full rounded-full">
           {user.name[0].toUpperCase()}
         </div>
-      }
-      overlay={
-        user.role === "admin" && (
-          <div
-            className={cn(
-              "[--badge-offset:calc(var(--avatar-size)/8)]",
-              "absolute -right-(--badge-offset) -bottom-(--badge-offset) p-[calc(var(--avatar-size)/16)]",
-              "flex-center bg-fill-info size-[calc(var(--avatar-size)/2)] rounded-full border",
-            )}
-          >
-            <Shield className="fill-text-info-on-fill size-fill stroke-0" />
-          </div>
-        )
       }
     />
   );

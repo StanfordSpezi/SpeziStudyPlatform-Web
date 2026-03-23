@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { Button } from "@stanfordspezi/spezi-web-design-system";
+import { Button, toast } from "@stanfordspezi/spezi-web-design-system";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
 import { BrandIconGroup } from "@/components/interfaces/BrandIconGroup";
@@ -15,7 +15,9 @@ import { getKeycloak } from "@/lib/auth/keycloak";
 const SignInRoute = () => {
   const handleSignIn = () => {
     const keycloak = getKeycloak();
-    void keycloak.login();
+    keycloak.login().catch(() => {
+      toast.error("Unable to start sign-in. Please try again.");
+    });
   };
 
   return (

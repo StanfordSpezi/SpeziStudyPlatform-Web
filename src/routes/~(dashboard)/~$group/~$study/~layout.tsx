@@ -17,11 +17,11 @@ import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import { ErrorLayout } from "@/components/layouts/ErrorLayout";
 import { LocaleProvider } from "@/lib/locale";
 import { groupRetrieveQueryOptions } from "@/lib/queries/group";
-import { studyRetrieveQueryOptions } from "@/lib/queries/study";
+import { studyResponseQueryOptions } from "@/lib/queries/study";
 
 const DashboardLayoutRoute = () => {
   const { study: studyId } = useParams({ from: "/(dashboard)/$group/$study" });
-  const { data: study } = useQuery(studyRetrieveQueryOptions({ studyId }));
+  const { data: study } = useQuery(studyResponseQueryOptions({ studyId }));
   return (
     <LocaleProvider studyId={studyId} supportedLocales={study?.locales ?? []}>
       <DashboardLayout>
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/(dashboard)/$group/$study")({
         groupRetrieveQueryOptions({ groupId: params.group }),
       ),
       queryClient.fetchQuery(
-        studyRetrieveQueryOptions({ studyId: params.study }),
+        studyResponseQueryOptions({ studyId: params.study }),
       ),
     ]);
   },

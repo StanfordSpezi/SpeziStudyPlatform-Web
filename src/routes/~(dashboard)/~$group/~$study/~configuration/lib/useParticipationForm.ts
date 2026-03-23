@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import type { ParticipationCriterion } from "@/lib/api/generated/types.gen";
 import { zParticipationCriterion } from "@/lib/api/generated/zod.gen";
-import { studyRetrieveQueryOptions } from "@/lib/queries/study";
+import { studyResponseQueryOptions } from "@/lib/queries/study";
 
 const participationFormSchema = z.object({
   // z.custom wrapper needed: zParticipationCriterion infers as `any` due to recursive z.lazy in generated code
@@ -37,7 +37,7 @@ export const useParticipationForm = () => {
     from: "/(dashboard)/$group/$study/configuration/participation",
   });
   const { data: study } = useQuery(
-    studyRetrieveQueryOptions({ studyId: params.study }),
+    studyResponseQueryOptions({ studyId: params.study }),
   );
 
   const formValues =

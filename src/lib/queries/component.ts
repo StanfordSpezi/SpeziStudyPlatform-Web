@@ -6,8 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { useMutation } from "@tanstack/react-query";
-import { onMutationError, useInvalidateFn } from "./mutationCallbacks";
+import { createMutationHook } from "./mutationCallbacks";
 import {
   getStudiesByStudyIdComponentsOptions,
   getStudiesByStudyIdComponentsInformationalByComponentIdOptions,
@@ -77,89 +76,67 @@ export const scheduleListQueryOptions = ({
 
 // --- Component mutations ---
 
-export const useDeleteComponentMutation = () =>
-  useMutation({
-    ...deleteStudiesByStudyIdComponentsByComponentIdMutation(),
-    onSuccess: useInvalidateFn("getStudiesByStudyIdComponents"),
-    onError: onMutationError("Error deleting component"),
-  });
+export const useDeleteComponentMutation = createMutationHook(
+  deleteStudiesByStudyIdComponentsByComponentIdMutation,
+  "Error deleting component",
+  "getStudiesByStudyIdComponents",
+);
 
-export const useCreateInformationalMutation = () =>
-  useMutation({
-    ...postStudiesByStudyIdComponentsInformationalMutation(),
-    onSuccess: useInvalidateFn("getStudiesByStudyIdComponents"),
-    onError: onMutationError("Error creating component"),
-  });
+export const useCreateInformationalMutation = createMutationHook(
+  postStudiesByStudyIdComponentsInformationalMutation,
+  "Error creating component",
+  "getStudiesByStudyIdComponents",
+);
 
-export const useCreateQuestionnaireMutation = () =>
-  useMutation({
-    ...postStudiesByStudyIdComponentsQuestionnaireMutation(),
-    onSuccess: useInvalidateFn("getStudiesByStudyIdComponents"),
-    onError: onMutationError("Error creating component"),
-  });
+export const useCreateQuestionnaireMutation = createMutationHook(
+  postStudiesByStudyIdComponentsQuestionnaireMutation,
+  "Error creating component",
+  "getStudiesByStudyIdComponents",
+);
 
-export const useCreateHealthDataMutation = () =>
-  useMutation({
-    ...postStudiesByStudyIdComponentsHealthDataMutation(),
-    onSuccess: useInvalidateFn("getStudiesByStudyIdComponents"),
-    onError: onMutationError("Error creating component"),
-  });
+export const useCreateHealthDataMutation = createMutationHook(
+  postStudiesByStudyIdComponentsHealthDataMutation,
+  "Error creating component",
+  "getStudiesByStudyIdComponents",
+);
 
-export const useUpdateInformationalMutation = () =>
-  useMutation({
-    ...putStudiesByStudyIdComponentsInformationalByComponentIdMutation(),
-    onSuccess: useInvalidateFn(
-      "getStudiesByStudyIdComponents",
-      "getStudiesByStudyIdComponentsInformationalByComponentId",
-    ),
-    onError: onMutationError("Error updating component"),
-  });
+export const useUpdateInformationalMutation = createMutationHook(
+  putStudiesByStudyIdComponentsInformationalByComponentIdMutation,
+  "Error updating component",
+  "getStudiesByStudyIdComponents",
+  "getStudiesByStudyIdComponentsInformationalByComponentId",
+);
 
-export const useUpdateQuestionnaireMutation = () =>
-  useMutation({
-    ...putStudiesByStudyIdComponentsQuestionnaireByComponentIdMutation(),
-    onSuccess: useInvalidateFn(
-      "getStudiesByStudyIdComponents",
-      "getStudiesByStudyIdComponentsQuestionnaireByComponentId",
-    ),
-    onError: onMutationError("Error updating component"),
-  });
+export const useUpdateQuestionnaireMutation = createMutationHook(
+  putStudiesByStudyIdComponentsQuestionnaireByComponentIdMutation,
+  "Error updating component",
+  "getStudiesByStudyIdComponents",
+  "getStudiesByStudyIdComponentsQuestionnaireByComponentId",
+);
 
-export const useUpdateHealthDataMutation = () =>
-  useMutation({
-    ...putStudiesByStudyIdComponentsHealthDataByComponentIdMutation(),
-    onSuccess: useInvalidateFn(
-      "getStudiesByStudyIdComponents",
-      "getStudiesByStudyIdComponentsHealthDataByComponentId",
-    ),
-    onError: onMutationError("Error updating component"),
-  });
+export const useUpdateHealthDataMutation = createMutationHook(
+  putStudiesByStudyIdComponentsHealthDataByComponentIdMutation,
+  "Error updating component",
+  "getStudiesByStudyIdComponents",
+  "getStudiesByStudyIdComponentsHealthDataByComponentId",
+);
 
 // --- Schedule mutations ---
 
-export const useCreateScheduleMutation = () =>
-  useMutation({
-    ...postStudiesByStudyIdComponentsByComponentIdSchedulesMutation(),
-    onSuccess: useInvalidateFn(
-      "getStudiesByStudyIdComponentsByComponentIdSchedules",
-    ),
-    onError: onMutationError("Error creating schedule"),
-  });
+export const useCreateScheduleMutation = createMutationHook(
+  postStudiesByStudyIdComponentsByComponentIdSchedulesMutation,
+  "Error creating schedule",
+  "getStudiesByStudyIdComponentsByComponentIdSchedules",
+);
 
-export const useUpdateScheduleMutation = () =>
-  useMutation({
-    ...putStudiesByStudyIdComponentsByComponentIdSchedulesByScheduleIdMutation(),
-    onSuccess: useInvalidateFn(
-      "getStudiesByStudyIdComponentsByComponentIdSchedules",
-    ),
-    onError: onMutationError("Error updating schedule"),
-  });
+export const useUpdateScheduleMutation = createMutationHook(
+  putStudiesByStudyIdComponentsByComponentIdSchedulesByScheduleIdMutation,
+  "Error updating schedule",
+  "getStudiesByStudyIdComponentsByComponentIdSchedules",
+);
 
-export const useDeleteScheduleMutation = () =>
-  useMutation({
-    ...deleteStudiesByStudyIdComponentsByComponentIdSchedulesByScheduleIdMutation(),
-    onSuccess: useInvalidateFn(
-      "getStudiesByStudyIdComponentsByComponentIdSchedules",
-    ),
-    onError: onMutationError("Error deleting schedule"),
-  });
+export const useDeleteScheduleMutation = createMutationHook(
+  deleteStudiesByStudyIdComponentsByComponentIdSchedulesByScheduleIdMutation,
+  "Error deleting schedule",
+  "getStudiesByStudyIdComponentsByComponentIdSchedules",
+);

@@ -30,7 +30,7 @@ import { FeaturedIconContainer } from "@/components/ui/FeaturedIconContainer";
 import { FieldLabel } from "@/components/ui/FieldLabel";
 import { useLocale } from "@/lib/locale";
 import {
-  studyRetrieveQueryOptions,
+  studyResponseQueryOptions,
   useUpdateStudyMutation,
 } from "@/lib/queries/study";
 import {
@@ -126,7 +126,7 @@ const LocaleSelectorContent = ({ studyId }: { studyId: string }) => {
   const updateStudy = useUpdateStudyMutation();
 
   const { data: study } = useQuery({
-    ...studyRetrieveQueryOptions({ studyId }),
+    ...studyResponseQueryOptions({ studyId }),
     enabled: !!studyId,
   });
 

@@ -16,11 +16,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@stanfordspezi/spezi-web-design-system";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Layers2, LogOut, User } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import { userRetrieveQueryOptions } from "@/lib/queries/user";
 import { notImplementedToast } from "@/utils/notImplementedToast";
 import { UserAvatar } from "./UserAvatar";
 import { UserDropdownSkeleton } from "./UserDropdownSkeleton";
@@ -28,8 +27,7 @@ import { UserDropdownSkeleton } from "./UserDropdownSkeleton";
 export const UserDropdown = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { logout } = useAuth();
-  const { data: user } = useQuery(userRetrieveQueryOptions({ userId: "me" }));
+  const { user, logout } = useAuth();
 
   const handleSignOut = async () => {
     queryClient.clear();
@@ -68,7 +66,7 @@ export const UserDropdown = () => {
             <div>
               <div className="text-sm">{user.name}</div>
               <div className="text-text-tertiary text-xs">
-                {user.role === "admin" ? "Administrator" : "User"}
+                {user.email}
               </div>
             </div>
           </div>

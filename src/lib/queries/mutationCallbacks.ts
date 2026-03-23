@@ -7,7 +7,26 @@
 //
 
 import { toast } from "@stanfordspezi/spezi-web-design-system";
-import { useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+} from "@tanstack/react-query";
+
+/**
+ * Operation IDs from the generated hey-api query key factories.
+ * Add new IDs here as endpoints are used for cache invalidation.
+ */
+type OperationId =
+  | "getGroups"
+  | "getGroupsByGroupId"
+  | "getGroupsByGroupIdStudies"
+  | "getStudiesByStudyId"
+  | "getStudiesByStudyIdComponents"
+  | "getStudiesByStudyIdComponentsInformationalByComponentId"
+  | "getStudiesByStudyIdComponentsQuestionnaireByComponentId"
+  | "getStudiesByStudyIdComponentsHealthDataByComponentId"
+  | "getStudiesByStudyIdComponentsByComponentIdSchedules";
 
 const hasStringProperty = (
   object: object,
@@ -37,7 +56,7 @@ export const onMutationError = (message: string) => (error: unknown) =>
  * Hook that returns a callback to invalidate queries by their generated operation IDs.
  * Must be called at the top level of a custom hook (e.g. inside use*Mutation factories).
  */
-export const useInvalidateFn = (...ids: string[]) => {
+export const useInvalidateFn = (...ids: OperationId[]) => {
   const queryClient = useQueryClient();
   return () =>
     Promise.all(
@@ -46,3 +65,19 @@ export const useInvalidateFn = (...ids: string[]) => {
       ),
     );
 };
+
+/**
+ * Creates a mutation hook with standardized error toasting and query invalidation.
+ */
+export const createMutationHook =
+  <TData, TError, TVariables, TContext>(
+    mutation: () => UseMutationOptions<TData, TError, TVariables, TContext>,
+    errorMessage: string,
+    ...invalidationIds: OperationId[]
+  ) =>
+  () =>
+    useMutation({
+      ...mutation(),
+      onSuccess: useInvalidateFn(...invalidationIds),
+      onError: onMutationError(errorMessage),
+    });

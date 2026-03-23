@@ -18,8 +18,8 @@ const envSchema = z.object({
   // Custom env variables
   VITE_API_BASE_PATH: z.url(),
   VITE_KEYCLOAK_URL: z.url(),
-  VITE_KEYCLOAK_REALM: z.string(),
-  VITE_KEYCLOAK_CLIENT_ID: z.string(),
+  VITE_KEYCLOAK_REALM: z.string().min(1),
+  VITE_KEYCLOAK_CLIENT_ID: z.string().min(1),
 });
 
 export const env: ImportMetaEnv = envSchema.parse(import.meta.env);

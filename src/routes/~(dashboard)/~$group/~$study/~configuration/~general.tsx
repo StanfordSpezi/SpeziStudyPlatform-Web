@@ -13,7 +13,7 @@ import { NavigationBlocker } from "@/components/interfaces/NavigationBlocker";
 import { PhonePreview } from "@/components/interfaces/PhonePreview";
 import { Card } from "@/components/ui/Card";
 import { SaveButton } from "@/components/ui/SaveButton";
-import { parseStudyResponse, toStudyPatchInput } from "@/lib/api/transforms";
+import type { StudyDetailContent } from "@/lib/api/generated/types.gen";
 import { useLocale } from "@/lib/locale";
 import { useUpdateStudyMutation } from "@/lib/queries/study";
 import { GeneralForm } from "./components/GeneralForm";
@@ -32,14 +32,38 @@ const GeneralRouteComponent = () => {
   >();
 
   const handleSubmit = form.handleSubmit((data) => {
+    const { icon, ...textFields } = data;
+    const localeContent: StudyDetailContent = {
+      title: textFields.title,
+      ...(textFields.shortTitle != null && {
+        shortTitle: textFields.shortTitle,
+      }),
+      ...(textFields.explanationText != null && {
+        explanationText: textFields.explanationText,
+      }),
+      ...(textFields.shortExplanationText != null && {
+        shortExplanationText: textFields.shortExplanationText,
+      }),
+    };
+
     updateStudy.mutate(
       {
         path: { studyId: params.study },
-        body: toStudyPatchInput(data, locale, studyResponse?.details),
+        body: {
+          ...(icon != null && { icon }),
+          details: { ...studyResponse?.details, [locale]: localeContent },
+        },
       },
       {
-        onSuccess: (data) => {
-          form.reset(parseStudyResponse(data, locale));
+        onSuccess: (response) => {
+          const details = response.details[locale];
+          form.reset({
+            icon: response.icon,
+            title: details?.title ?? "",
+            shortTitle: details?.shortTitle ?? null,
+            explanationText: details?.explanationText ?? null,
+            shortExplanationText: details?.shortExplanationText ?? null,
+          });
         },
       },
     );
