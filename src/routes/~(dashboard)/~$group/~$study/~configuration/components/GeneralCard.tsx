@@ -8,9 +8,9 @@
 
 import { useParams } from "@tanstack/react-router";
 import { DynamicIcon, type IconName } from "lucide-react/dynamic";
-import type { StudyResponse } from "@/lib/api/generated/types.gen";
 import { KeyValueCard } from "@/components/interfaces/KeyValueCard";
 import { EditButtonLink } from "@/components/ui/EditButton";
+import type { StudyResponse } from "@/lib/api/generated/types.gen";
 import { useLocale } from "@/lib/locale";
 
 interface GeneralCardProps {

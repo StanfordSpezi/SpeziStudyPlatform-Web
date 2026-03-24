@@ -42,11 +42,9 @@ let refreshPromise: Promise<string | undefined> | null = null;
  */
 const getTokenOnce = async (): Promise<string | undefined> => {
   if (!getAccessToken) return undefined;
-  if (!refreshPromise) {
-    refreshPromise = getAccessToken().finally(() => {
-      refreshPromise = null;
-    });
-  }
+  refreshPromise ??= getAccessToken().finally(() => {
+    refreshPromise = null;
+  });
   return refreshPromise;
 };
 
@@ -89,13 +87,10 @@ client.interceptors.error.use((error, response) => {
     };
     return new ApiError({ title, status, detail });
   }
-  if (response) {
-    return new ApiError({
-      title: response.statusText || "Request failed",
-      status: response.status,
-    });
-  }
-  return error;
+  return new ApiError({
+    title: response.statusText || "Request failed",
+    status: response.status,
+  });
 });
 
 export { client };

@@ -42,7 +42,7 @@ export const useParticipationForm = () => {
 
   const formValues =
     study ?
-      { participationCriterion: study.participationCriterion ?? null }
+      { participationCriterion: study.participationCriterion }
     : undefined;
 
   const form = useForm({

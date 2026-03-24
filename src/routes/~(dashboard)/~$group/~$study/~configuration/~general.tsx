@@ -59,10 +59,10 @@ const GeneralRouteComponent = () => {
           const details = response.details[locale];
           form.reset({
             icon: response.icon,
-            title: details?.title ?? "",
-            shortTitle: details?.shortTitle ?? null,
-            explanationText: details?.explanationText ?? null,
-            shortExplanationText: details?.shortExplanationText ?? null,
+            title: details.title,
+            shortTitle: details.shortTitle,
+            explanationText: details.explanationText,
+            shortExplanationText: details.shortExplanationText,
           });
         },
       },

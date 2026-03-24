@@ -65,9 +65,7 @@ export const UserDropdown = () => {
             />
             <div>
               <div className="text-sm">{user.name}</div>
-              <div className="text-text-tertiary text-xs">
-                {user.email}
-              </div>
+              <div className="text-text-tertiary text-xs">{user.email}</div>
             </div>
           </div>
         </DropdownMenuLabel>
