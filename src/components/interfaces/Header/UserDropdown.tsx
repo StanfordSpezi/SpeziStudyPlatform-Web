@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -16,11 +16,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@stanfordspezi/spezi-web-design-system";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Layers2, LogOut, User } from "lucide-react";
-import { authClient } from "@/lib/authClient";
-import { userRetrieveQueryOptions } from "@/lib/queries/user";
+import { useAuth } from "@/lib/auth/AuthProvider";
 import { notImplementedToast } from "@/utils/notImplementedToast";
 import { UserAvatar } from "./UserAvatar";
 import { UserDropdownSkeleton } from "./UserDropdownSkeleton";
@@ -28,11 +27,11 @@ import { UserDropdownSkeleton } from "./UserDropdownSkeleton";
 export const UserDropdown = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { data: user } = useQuery(userRetrieveQueryOptions({ userId: "me" }));
+  const { user, logout } = useAuth();
 
   const handleSignOut = async () => {
-    await authClient.signOut();
     queryClient.clear();
+    await logout();
     await navigate({ to: "/sign-in" });
   };
 
@@ -66,9 +65,7 @@ export const UserDropdown = () => {
             />
             <div>
               <div className="text-sm">{user.name}</div>
-              <div className="text-text-tertiary text-xs">
-                {user.role === "admin" ? "Administrator" : "User"}
-              </div>
+              <div className="text-text-tertiary text-xs">{user.email}</div>
             </div>
           </div>
         </DropdownMenuLabel>

@@ -1,5 +1,5 @@
 #
-# This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+# This source file is part of the Stanford Spezi open source project
 #
 # SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
@@ -16,12 +16,12 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 8 * * 1'
+    - cron: "0 8 * * 1"
 
 jobs:
   analyze:
     name: Analyze
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     permissions:
       security-events: write
       packages: read

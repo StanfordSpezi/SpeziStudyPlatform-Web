@@ -1,9 +1,9 @@
 {
-  "name": "@stanfordspezi/spezi-web-study-platform",
+  "name": "@stanfordspezi/spezi-study-platform-web",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
-  "description": "Stanford Biodesign Digital Health Spezi Web Study Platform Frontend",
+  "description": "SpeziStudyPlatform-Web Frontend",
   "keywords": [
     "Stanford",
     "Biodesign",
@@ -14,68 +14,66 @@
     "Frontend"
   ],
   "engines": {
-    "node": "22"
+    "node": "24"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/StanfordSpezi/spezi-web-study-platform"
+    "url": "https://github.com/StanfordSpezi/SpeziStudyPlatform-Web"
   },
   "private": true,
   "scripts": {
-    "dev": "concurrently --names ui,server -c gray,blue \"npm run dev:ui\" \"npm run dev:server\"",
-    "dev:ui": "vite --port 3000",
-    "dev:server": "tsx src/server/index.ts --port 3001",
+    "dev": "vite --port 3000",
     "build": "tsc && vite build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:ci": "eslint --output-file eslint_report.json --format json .",
     "prepush": "npm run lint:fix && tsc --noEmit",
-    "test": "playwright test"
+    "test": "playwright test",
+    "generate:api": "openapi-ts",
+    "postinstall": "openapi-ts"
   },
   "dependencies": {
-    "@stanfordspezi/spezi-web-design-system": "^0.16.0",
-    "@tailwindcss/vite": "^4.1.7",
-    "@tanstack/react-query": "^5.80.7",
-    "@tanstack/react-router": "^1.117.1",
+    "@hey-api/client-fetch": "^0.13.1",
+    "@stanfordspezi/spezi-web-design-system": "^0.19.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-router": "^1.160.2",
     "@tanstack/react-table": "^8.21.3",
-    "@tiptap/pm": "^3.6.1",
-    "@tiptap/react": "^3.6.1",
-    "@tiptap/starter-kit": "^3.6.1",
-    "better-auth": "^1.3.7",
+    "@tiptap/pm": "^3.19.0",
+    "@tiptap/react": "^3.19.0",
+    "@tiptap/starter-kit": "^3.19.0",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
-    "es-toolkit": "^1.39.10",
-    "lucide-react": "^0.525.0",
-    "match-sorter": "^8.0.3",
-    "radix-ui": "^1.4.2",
+    "es-toolkit": "^1.44.0",
+    "keycloak-js": "^26.2.3",
+    "lucide-react": "^0.574.0",
+    "match-sorter": "^8.2.0",
+    "radix-ui": "^1.4.3",
     "react": "^19",
     "react-dom": "^19",
-    "react-hotkeys-hook": "^5.1.0",
-    "tailwind-merge": "^3.3.0",
-    "tailwindcss": "^4.1.7",
+    "react-hotkeys-hook": "^5.2.4",
+    "tailwind-merge": "^3.4.1",
+    "tailwindcss": "^4.1.18",
     "tiptap-markdown": "^0.9.0",
     "usehooks-ts": "^3.1.1",
-    "virtua": "^0.41.5",
-    "zod": "^4.0.17"
+    "virtua": "^0.48.6",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@hono/node-server": "^1.18.2",
-    "@hono/zod-openapi": "^1.1.0",
-    "@playwright/test": "^1.55.0",
-    "@scalar/hono-api-reference": "^0.9.13",
-    "@stanfordspezi/spezi-web-configurations": "^0.5.1",
-    "@tanstack/router-plugin": "^1.117.2",
+    "@hey-api/openapi-ts": "^0.93.0",
+    "@playwright/test": "^1.58.2",
+    "@stanfordspezi/spezi-web-configurations": "^0.6.0",
+    "@tanstack/router-plugin": "^1.161.0",
     "@total-typescript/ts-reset": "^0.6.1",
-    "@types/node": "^22",
+    "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4.4.1",
-    "concurrently": "^9.2.0",
+    "@vitejs/plugin-react": "^5.1.4",
     "eslint": "^9",
-    "hono": "^4.9.6",
     "prettier": "^3",
-    "tsx": "^4.20.4",
     "typescript": "^5",
-    "vite": "^6.3.6"
+    "vite": "^7.3.1"
   }
 }

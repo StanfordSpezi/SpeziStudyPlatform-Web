@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -11,12 +11,13 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorLayout } from "./components/layouts/ErrorLayout";
+import { AuthProvider } from "./lib/auth/AuthProvider";
 import { queryClient } from "./lib/queryClient";
 import { routeTree } from "./routeTree.gen";
 import "./styles/index.css";
 
 const router = createRouter({
-  basepath: "/spezi-web-study-platform", // This is necessary for GitHub Pages
+  basepath: "/SpeziStudyPlatform-Web", // This is necessary for GitHub Pages
   routeTree,
   context: {
     queryClient,
@@ -39,9 +40,11 @@ if (rootElement && !rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </AuthProvider>
     </StrictMode>,
   );
 }

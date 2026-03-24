@@ -1,18 +1,11 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
-export enum IconCategory {
-  Text = "text",
-  Design = "design",
-  Layout = "layout",
-  Navigation = "navigation",
-  Social = "social",
-}
 export const iconsData: Array<{
   name: string;
   categories: string[];

@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -25,8 +25,10 @@ import { useEffect, type ComponentProps } from "react";
 import { Markdown } from "tiptap-markdown";
 import { cn } from "@/utils/cn";
 
-interface ToggleProps
-  extends Omit<ComponentProps<typeof Button>, "variant" | "size" | "onClick"> {
+interface ToggleProps extends Omit<
+  ComponentProps<typeof Button>,
+  "variant" | "size" | "onClick"
+> {
   pressed?: boolean;
   onPressedChange?: () => void;
 }

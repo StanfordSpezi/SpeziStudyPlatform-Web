@@ -1,6 +1,6 @@
 <!--
 
-This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
@@ -8,15 +8,15 @@ SPDX-License-Identifier: MIT
 
 -->
 
-# Stanford Biodesign Digital Health Spezi Web Study Platform Frontend
+# SpeziStudyPlatform-Web
 
-[![Build and Test](https://github.com/StanfordSpezi/spezi-web-study-platform/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/spezi-web-study-platform/actions/workflows/build-and-test.yml)
+[![Build and Test](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/actions/workflows/build-and-test.yml)
 
 The project aims to build an open‑source platform that enables researchers to run simple studies without deep technical expertise. Users define studies by specifying metadata, participant criteria, and app components. These study definitions then configure the companion iOS and Android apps that participants use to take part in the study. Get a quick overview of the platform by checking out the [screenshots](docs/reference/screenshots.md).
 
 This repository contains the frontend code for the platform. Visit [spezi-web-service-study-platform](https://github.com/StanfordSpezi/spezi-web-service-study-platform) for the backend code.
 
-<img width="1618" height="939" alt="Spezi Web Study Platform interface overview" src="./images/hero.webp" />
+<img width="1618" height="939" alt="SpeziStudyPlatform-Web interface overview" src="./images/hero.webp" />
 
 ## Getting Started
 
@@ -24,8 +24,8 @@ To get started with the project, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/StanfordSpezi/spezi-web-study-platform.git
-   cd spezi-web-study-platform
+   git clone https://github.com/StanfordSpezi/SpeziStudyPlatform-Web.git
+   cd SpeziStudyPlatform-Web
    ```
 2. Install the dependencies:
    ```bash
@@ -71,12 +71,12 @@ We welcome contributions! Please read our [contributing guidelines](https://gith
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/spezi-web-study-platform/tree/main/LICENSES) for more information.
+This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/tree/main/LICENSES) for more information.
 
 ## Contributors
 
 This project is developed as part of the Stanford Byers Center for Biodesign at Stanford University.
-See [CONTRIBUTORS.md](https://github.com/StanfordSpezi/spezi-web-study-platform/tree/main/CONTRIBUTORS.md) for a full list of all contributors.
+See [CONTRIBUTORS.md](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/tree/main/CONTRIBUTORS.md) for a full list of all contributors.
 
 ![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-light.png#gh-light-mode-only)
 ![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-dark.png#gh-dark-mode-only)

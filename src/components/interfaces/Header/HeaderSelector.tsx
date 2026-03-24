@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -52,7 +52,7 @@ export const HeaderSelectorMenuItem = <
   onSelect,
   className,
 }: HeaderSelectorMenuItemProps<TRouter, TOptions>) => {
-  const content = (
+  const menuItemContent = (
     <>
       {icon && (
         <div className="flex-center size-6 rounded-sm border">
@@ -66,7 +66,7 @@ export const HeaderSelectorMenuItem = <
   if (linkOptions) {
     return (
       <DropdownMenuItem className={cn("gap-2 p-2!", className)} asChild>
-        <Link {...linkOptions}>{content}</Link>
+        <Link {...linkOptions}>{menuItemContent}</Link>
       </DropdownMenuItem>
     );
   }
@@ -76,7 +76,7 @@ export const HeaderSelectorMenuItem = <
       className={cn("gap-2 p-2!", className)}
       onSelect={onSelect}
     >
-      {content}
+      {menuItemContent}
     </DropdownMenuItem>
   );
 };
@@ -85,7 +85,7 @@ export const HeaderSelector = ({
   selectedItem,
   children,
 }: {
-  selectedItem: { title: string; icon?: IconName };
+  selectedItem: { title: ReactNode; icon?: IconName };
   children: ReactNode;
 }) => {
   return (

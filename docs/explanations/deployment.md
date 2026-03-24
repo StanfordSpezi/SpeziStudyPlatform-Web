@@ -1,6 +1,6 @@
 <!--
 
-This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
@@ -23,7 +23,7 @@ Learn more about GitHub Pages in the [GitHub Pages documentation](https://docs.g
 
 ## GitHub Actions workflow
 
-The deployment workflow is automated via GitHub Actions, defined in [`.github/workflows/deploy-to-pages.yml`](https://github.com/StanfordSpezi/spezi-web-study-platform/blob/main/.github/workflows/deploy-to-pages.yml). This workflow:
+The deployment workflow is automated via GitHub Actions, defined in [`.github/workflows/deploy-to-pages.yml`](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/blob/main/.github/workflows/deploy-to-pages.yml). This workflow:
 
 - Builds the static assets using Vite (`npm run build`).
 - Deploys the built assets (`dist` folder) directly to GitHub Pages.
@@ -34,6 +34,6 @@ Learn more about GitHub Actions in the [GitHub Actions documentation](https://do
 
 ## Vite configuration specifics
 
-The Vite configuration (`vite.config.ts`) sets the `base` path explicitly to `/spezi-web-study-platform/`. This is necessary because GitHub Pages hosts the site under a sub-path (`https://<USERNAME>.github.io/<REPO>/`). Without this configuration, asset paths and routing would break.
+The Vite configuration (`vite.config.ts`) sets the `base` path explicitly to `/SpeziStudyPlatform-Web/`. This is necessary because GitHub Pages hosts the site under a sub-path (`https://<USERNAME>.github.io/<REPO>/`). Without this configuration, asset paths and routing would break.
 
 For more details, see [Vite's GitHub Pages deployment documentation](https://v5.vite.dev/guide/static-deploy.html#github-pages).

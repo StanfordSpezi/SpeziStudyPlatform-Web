@@ -1,5 +1,5 @@
 #
-# This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+# This source file is part of the Stanford Spezi open source project
 #
 # SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
@@ -8,13 +8,11 @@
 
 # This workflow runs Playwright tests on every push and pull request to the main branch
 # Set up by the playwright init command
+# Currently disabled: only runs via manual trigger
 name: Playwright E2E Tests
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   e2e-tests:

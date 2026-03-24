@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -10,11 +10,13 @@ import type { ReactNode } from "react";
 import { Header } from "../interfaces/Header/Header";
 import { SidebarProvider } from "../interfaces/Sidebar/Sidebar";
 
-interface DashboardLayoutProps {
-  children: ReactNode | ReactNode[];
+interface MinimalDashboardLayoutProps {
+  children: ReactNode;
 }
 
-export const MinimalDashboardLayout = ({ children }: DashboardLayoutProps) => {
+export const MinimalDashboardLayout = ({
+  children,
+}: MinimalDashboardLayoutProps) => {
   return (
     <SidebarProvider className="flex flex-col">
       <Header />

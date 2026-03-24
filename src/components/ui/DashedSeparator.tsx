@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -8,8 +8,6 @@
 
 import type { ComponentProps } from "react";
 import { cn } from "@/utils/cn";
-
-interface DashedSeparatorProps extends ComponentProps<"div"> {}
 
 /**
  * Renders a horizontal dashed separator line. Use this component instead of Tailwind's `border-b border-dashed`
@@ -24,7 +22,7 @@ export const DashedSeparator = ({
   className,
   style,
   ...props
-}: DashedSeparatorProps) => {
+}: ComponentProps<"div">) => {
   return (
     <div
       aria-hidden="true"
