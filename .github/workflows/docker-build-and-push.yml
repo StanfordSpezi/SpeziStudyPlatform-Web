@@ -1,0 +1,25 @@
+#
+# This source file is part of the Stanford Spezi open source project
+#
+# SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Docker Build and Push
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  docker-build-and-push:
+    name: Docker Build and Push
+    uses: StanfordBDHG/.github/.github/workflows/docker-build-and-push.yml@v2
+    with:
+      imageName: stanfordspezi/spezi-study-platform-web
+    permissions:
+      contents: read
+      packages: write

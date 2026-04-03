@@ -10,7 +10,7 @@ import { toast, useForm } from "@stanfordspezi/spezi-web-design-system";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
-import type { ComponentSchedule } from "@/lib/api/generated/types.gen";
+import type { ComponentScheduleInput } from "@/lib/api/generated/types.gen";
 import { zComponentSchedule } from "@/lib/api/generated/zod.gen";
 import {
   componentListQueryOptions,
@@ -58,7 +58,7 @@ export const useScheduleForm = () => {
   const updateSchedule = useUpdateScheduleMutation();
   const deleteSchedule = useDeleteScheduleMutation();
 
-  const submitSchedule = (data: ComponentSchedule, onSuccess: () => void) => {
+  const submitSchedule = (data: ComponentScheduleInput, onSuccess: () => void) => {
     const scheduleId = existingSchedule?.id;
 
     if (scheduleId) {

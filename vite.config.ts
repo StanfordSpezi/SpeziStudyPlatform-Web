@@ -15,7 +15,7 @@ import { dedent } from "./src/utils/dedent";
 
 export default defineConfig(({ mode }) => ({
   root: ".",
-  base: "/SpeziStudyPlatform-Web/", // This is necessary for GitHub Pages
+  base: "/",
   plugins: [
     tanstackRouter({
       routeToken: "layout",
