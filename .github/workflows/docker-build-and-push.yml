@@ -15,11 +15,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker-build-and-push:
+  publish:
     name: Docker Build and Push
     uses: StanfordBDHG/.github/.github/workflows/docker-build-and-push.yml@v2
     with:
-      imageName: stanfordspezi/spezi-study-platform-web
+      imageName: stanfordspezi/spezistudyplatform-web
     permissions:
       contents: read
       packages: write
