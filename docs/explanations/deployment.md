@@ -14,26 +14,25 @@ This document explains the deployment strategy used in this repository, highligh
 
 ## Deployment approach
 
-We deploy the frontend as a static site using GitHub Pages, automated through GitHub Actions. This approach was chosen for its simplicity, ease of maintenance, and nice integration with our existing GitHub workflow.
+We deploy the frontend as a containerized static site using Docker and Kubernetes (K8s). The application is built into a Docker image that serves pre-built assets via Nginx, with runtime environment variables injected at container startup.
 
-## Why GitHub Pages?
+## Why Docker / K8s?
 
-GitHub Pages was selected primarily due to its integration with GitHub Actions, minimal configuration, and straightforward deployment process. Since the project is a static site without backend requirements, GitHub Pages provides sufficient functionality without unnecessary complexity.
-Learn more about GitHub Pages in the [GitHub Pages documentation](https://docs.github.com/en/pages).
+Docker provides a reproducible build and runtime environment, while Kubernetes handles orchestration, scaling, and rolling updates. This approach decouples the build from the deployment target and allows the same image to be configured for different environments (staging, production) via environment variables at startup time.
 
-## GitHub Actions workflow
+## Docker build and runtime
 
-The deployment workflow is automated via GitHub Actions, defined in [`.github/workflows/deploy-to-pages.yml`](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/blob/main/.github/workflows/deploy-to-pages.yml). This workflow:
+The Docker setup consists of:
 
-- Builds the static assets using Vite (`npm run build`).
-- Deploys the built assets (`dist` folder) directly to GitHub Pages.
+- **`Dockerfile`**: Multi-stage build — Node.js builds the static assets, then Nginx serves them. Runs as non-root (`nginx` user) for defense in depth.
+- **`docker-entrypoint.sh`**: Generates `public/env.js` at container startup, injecting runtime environment variables (`VITE_API_BASE_PATH`, `VITE_KEYCLOAK_URL`, `VITE_KEYCLOAK_REALM`, `VITE_KEYCLOAK_CLIENT_ID`) into `window.__ENV__`. Validates that all required variables are set.
+- **`nginx.conf`**: SPA fallback configuration, aggressive caching for hashed assets, and no-cache directives for `index.html` and `env.js`.
+- **`docker-compose.yml`**: Local production build test that mirrors the container image used in K8s. Requires a `.env` file with the required environment variables.
 
-This means that every time a commit is pushed to the main branch, the latest version of the app is automatically built and deployed. This ensures that the live version of the app is always up-to-date with the latest changes.
+## CI/CD workflow
 
-Learn more about GitHub Actions in the [GitHub Actions documentation](https://docs.github.com/en/actions).
+The build-and-push workflow is defined in [`.github/workflows/docker-build-and-push.yml`](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/blob/main/.github/workflows/docker-build-and-push.yml). This workflow builds the Docker image and pushes it to the container registry on pushes to the main branch.
 
 ## Vite configuration specifics
 
-The Vite configuration (`vite.config.ts`) sets the `base` path explicitly to `/SpeziStudyPlatform-Web/`. This is necessary because GitHub Pages hosts the site under a sub-path (`https://<USERNAME>.github.io/<REPO>/`). Without this configuration, asset paths and routing would break.
-
-For more details, see [Vite's GitHub Pages deployment documentation](https://v5.vite.dev/guide/static-deploy.html#github-pages).
+The Vite configuration (`vite.config.ts`) sets the `base` path to `/`. The application is served from the root path in the Docker/K8s deployment. Runtime environment variables are provided via `window.__ENV__`, which is merged with `import.meta.env` at startup.

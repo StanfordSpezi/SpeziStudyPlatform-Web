@@ -17,7 +17,7 @@ import { routeTree } from "./routeTree.gen";
 import "./styles/index.css";
 
 const router = createRouter({
-  basepath: "/SpeziStudyPlatform-Web", // This is necessary for GitHub Pages
+  basepath: "/",
   routeTree,
   context: {
     queryClient,

@@ -8,10 +8,22 @@
 # SPDX-License-Identifier: MIT
 #
 
-set -e
+set -eu
 
-# Escape backslashes and double quotes to produce valid JS string literals.
-esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+# Validate required environment variables.
+: "${VITE_API_BASE_PATH:?VITE_API_BASE_PATH is required}"
+: "${VITE_KEYCLOAK_URL:?VITE_KEYCLOAK_URL is required}"
+: "${VITE_KEYCLOAK_REALM:?VITE_KEYCLOAK_REALM is required}"
+: "${VITE_KEYCLOAK_CLIENT_ID:?VITE_KEYCLOAK_CLIENT_ID is required}"
+
+# Escape backslashes, double quotes, and newlines to produce valid JS string literals.
+esc() {
+  printf '%s' "$1" \
+    | sed -e 's/\\/\\\\/g' \
+          -e 's/"/\\"/g' \
+          -e 's/\r/\\r/g' \
+          -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g'
+}
 
 cat > /usr/share/nginx/html/env.js <<EOF
 window.__ENV__ = {
