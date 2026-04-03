@@ -58,7 +58,10 @@ export const useScheduleForm = () => {
   const updateSchedule = useUpdateScheduleMutation();
   const deleteSchedule = useDeleteScheduleMutation();
 
-  const submitSchedule = (data: ComponentScheduleInput, onSuccess: () => void) => {
+  const submitSchedule = (
+    data: ComponentScheduleInput,
+    onSuccess: () => void,
+  ) => {
     const scheduleId = existingSchedule?.id;
 
     if (scheduleId) {
