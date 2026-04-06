@@ -29,6 +29,12 @@ The Docker setup consists of:
 - **`nginx.conf`**: SPA fallback configuration, aggressive caching for hashed assets, and no-cache directives for `index.html` and `env.js`.
 - **`docker-compose.yml`**: Local production build test that mirrors the container image used in K8s. Requires a `.env` file with the required environment variables.
 
+## API base URL
+
+The frontend talks to the backend directly in all environments (dev, containerized prod, K8s). `VITE_API_BASE_PATH` is the backend **origin** only (scheme, host, port), with no path component; `src/lib/api/client.ts` appends `/api/v0`. Dev and prod share a single code path, so a misconfiguration fails the same way everywhere.
+
+Because the browser calls the backend cross-origin, the backend must allow the frontend's origin via CORS. For local dev that means allowing `http://localhost:5173` (Vite); for containerized local testing, `http://localhost:3000`; for deployed environments, whatever host serves the web app.
+
 ## Vite configuration specifics
 
 The Vite configuration (`vite.config.ts`) sets the `base` path to `/`. The application is served from the root path in the Docker/K8s deployment. Runtime environment variables are provided via `window.__ENV__`, which is merged with `import.meta.env` at startup.

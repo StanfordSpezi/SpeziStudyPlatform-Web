@@ -47,12 +47,4 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    proxy: {
-      "/api/v0": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-      },
-    },
-  },
 }));
