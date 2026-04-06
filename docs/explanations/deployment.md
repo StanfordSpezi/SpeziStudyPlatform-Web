@@ -29,10 +29,6 @@ The Docker setup consists of:
 - **`nginx.conf`**: SPA fallback configuration, aggressive caching for hashed assets, and no-cache directives for `index.html` and `env.js`.
 - **`docker-compose.yml`**: Local production build test that mirrors the container image used in K8s. Requires a `.env` file with the required environment variables.
 
-## CI/CD workflow
-
-The build-and-push workflow is defined in [`.github/workflows/docker-build-and-push.yml`](https://github.com/StanfordSpezi/SpeziStudyPlatform-Web/blob/main/.github/workflows/docker-build-and-push.yml). This workflow builds the Docker image and pushes it to the container registry on pushes to the main branch.
-
 ## Vite configuration specifics
 
 The Vite configuration (`vite.config.ts`) sets the `base` path to `/`. The application is served from the root path in the Docker/K8s deployment. Runtime environment variables are provided via `window.__ENV__`, which is merged with `import.meta.env` at startup.
