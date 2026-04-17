@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -13,14 +13,11 @@ import { Edit } from "lucide-react";
 import { type ComponentProps } from "react";
 import { cn } from "@/utils/cn";
 
-interface EditButtonProps
-  extends Omit<ComponentProps<typeof Button>, "children"> {}
-
 export const EditButton = ({
   size = "sm",
   variant = "outline",
   ...props
-}: EditButtonProps) => {
+}: Omit<ComponentProps<typeof Button>, "children">) => {
   return (
     <Button size={size} variant={variant} {...props}>
       <Edit className="size-3.5 opacity-80" />
@@ -30,7 +27,8 @@ export const EditButton = ({
 };
 
 interface BasicEditButtonLinkProps
-  extends Omit<ComponentProps<"a">, "children">,
+  extends
+    Omit<ComponentProps<"a">, "children">,
     VariantProps<typeof buttonVariance> {}
 
 const BasicEditButtonLink = ({

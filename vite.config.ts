@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -15,20 +15,20 @@ import { dedent } from "./src/utils/dedent";
 
 export default defineConfig(({ mode }) => ({
   root: ".",
-  base: "/spezi-web-study-platform/", // This is necessary for GitHub Pages
+  base: "/",
   plugins: [
     tanstackRouter({
       routeToken: "layout",
       routeFilePrefix: "~",
       routeTreeFileHeader: [
         dedent`
-        //
-        // This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
-        //
-        // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
-        //
-        // SPDX-License-Identifier: MIT
-        //
+          //
+          // This source file is part of the Stanford Spezi open source project
+          //
+          // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
+          //
+          // SPDX-License-Identifier: MIT
+          //
         `,
         "/* prettier-ignore-start */",
         "/* eslint-disable */",

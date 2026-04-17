@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -9,9 +9,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
-interface CardProps extends ComponentProps<"div"> {}
-
-export const Card = ({ className, ...props }: CardProps) => {
+export const Card = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       className={cn(

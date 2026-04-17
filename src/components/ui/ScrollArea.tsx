@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -7,6 +7,7 @@
 //
 
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+import type { ComponentProps, RefObject } from "react";
 import { cn } from "@/utils/cn";
 
 export const ScrollArea = ({
@@ -14,8 +15,8 @@ export const ScrollArea = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
-  scrollViewRef?: React.RefObject<HTMLDivElement | null>;
+}: ComponentProps<typeof ScrollAreaPrimitive.Root> & {
+  scrollViewRef?: RefObject<HTMLDivElement | null>;
 }) => {
   return (
     <ScrollAreaPrimitive.Root
@@ -40,7 +41,7 @@ export const ScrollBar = ({
   className,
   orientation = "vertical",
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) => {
+}: ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) => {
   return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
       data-slot="scroll-area-scrollbar"

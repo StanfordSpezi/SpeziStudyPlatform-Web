@@ -1,13 +1,13 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
-import { cn } from "@stanfordspezi/spezi-web-design-system";
 import { useEffect, useRef, type ReactNode } from "react";
+import { cn } from "@/utils/cn";
 
 const PhoneTopBar = () => {
   return (
@@ -30,6 +30,9 @@ const PhoneTopBar = () => {
   );
 };
 
+const PHONE_ASPECT_RATIO = 9 / 16;
+const RESIZE_DEBOUNCE_MS = 10;
+
 interface PhoneMockupProps {
   children?: ReactNode;
 }
@@ -44,45 +47,52 @@ export const PhoneMockup = ({ children }: PhoneMockupProps) => {
   // against 9∶16, and then apply either `width:100%; height:auto;` or
   // `height:100%; width:auto;` to maintain the aspect and prevent overflow.
   useEffect(() => {
-    const parent = parentRef.current;
-    const inner = innerRef.current;
-    if (!parent || !inner) return;
+    const parentElement = parentRef.current;
+    const innerElement = innerRef.current;
+    if (!parentElement || !innerElement) return;
 
-    const adjustAspect = () => {
-      const style = getComputedStyle(parent);
+    const adjustAspectRatio = () => {
+      const computedStyle = getComputedStyle(parentElement);
       const paddingX =
-        parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        parseFloat(computedStyle.paddingLeft) +
+        parseFloat(computedStyle.paddingRight);
       const paddingY =
-        parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-      const availableWidth = parent.clientWidth - paddingX;
-      const availableHeight = parent.clientHeight - paddingY;
+        parseFloat(computedStyle.paddingTop) +
+        parseFloat(computedStyle.paddingBottom);
+      const availableWidth = parentElement.clientWidth - paddingX;
+      const availableHeight = parentElement.clientHeight - paddingY;
       const effectiveRatio = availableWidth / availableHeight;
-      const targetRatio = 9 / 16;
 
-      if (effectiveRatio >= targetRatio) {
+      if (effectiveRatio >= PHONE_ASPECT_RATIO) {
         // Limit by height
-        inner.style.width = "auto";
-        inner.style.height = "100%";
+        innerElement.style.width = "auto";
+        innerElement.style.height = "100%";
       } else {
         // Limit by width
-        inner.style.width = "100%";
-        inner.style.height = "auto";
+        innerElement.style.width = "100%";
+        innerElement.style.height = "auto";
       }
 
-      const rect = inner.getBoundingClientRect();
-      inner.style.setProperty("--phone-width", `${rect.width}px`);
-      inner.style.setProperty("--phone-height", `${rect.height}px`);
+      const boundingRect = innerElement.getBoundingClientRect();
+      innerElement.style.setProperty(
+        "--phone-width",
+        `${boundingRect.width}px`,
+      );
+      innerElement.style.setProperty(
+        "--phone-height",
+        `${boundingRect.height}px`,
+      );
     };
 
-    adjustAspect();
+    adjustAspectRatio();
 
     let debounceTimeout: NodeJS.Timeout | null = null;
     const observer = new ResizeObserver(() => {
       if (debounceTimeout) clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(adjustAspect, 10);
+      debounceTimeout = setTimeout(adjustAspectRatio, RESIZE_DEBOUNCE_MS);
     });
 
-    observer.observe(parent);
+    observer.observe(parentElement);
 
     return () => {
       observer.disconnect();

@@ -1,5 +1,5 @@
 #
-# This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+# This source file is part of the Stanford Spezi open source project
 #
 # SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
@@ -34,6 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# auto-generated API client
+src/lib/api/generated/
+
 # lint
 eslint_report.json
 
@@ -46,6 +49,3 @@ eslint_report.json
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-
-# Server mock database
-/.dev-data/

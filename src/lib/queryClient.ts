@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -8,14 +8,24 @@
 
 import { toast } from "@stanfordspezi/spezi-web-design-system";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
+import { ApiError } from "./api/client";
+
+const isUnauthorized = (error: Error) =>
+  error instanceof ApiError && error.status === 401;
 
 export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (count, error) => !isUnauthorized(error) && count < 3,
+    },
+  },
   queryCache: new QueryCache({
     onError: (error) => {
-      if (error.message === "Unauthorized") {
+      if (isUnauthorized(error)) {
         // Handle unauthorized errors globally by showing a toast that prompts the user to sign in again.
         // This case is typically triggered when the user is authenticated but their session has expired.
         toast.error("Your session has expired. Please sign in again.", {
+          id: "session-expired",
           duration: 5000,
           // We reload the page to ensure that the navigation to the sign-in page
           // is handled inside the beforeLoad hook of the layout route.

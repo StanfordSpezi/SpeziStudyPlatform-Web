@@ -1,0 +1,22 @@
+#
+# This source file is part of the Stanford Spezi open source project
+#
+# SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+# Local production build test — mirrors the container image used in K8s.
+# Requires a .env file with VITE_API_BASE_PATH, VITE_KEYCLOAK_URL, VITE_KEYCLOAK_REALM, VITE_KEYCLOAK_CLIENT_ID.
+# Usage: docker compose up --build
+
+services:
+  web:
+    build: .
+    environment:
+      VITE_API_BASE_PATH: ${VITE_API_BASE_PATH:?VITE_API_BASE_PATH is required}
+      VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL:?VITE_KEYCLOAK_URL is required}
+      VITE_KEYCLOAK_REALM: ${VITE_KEYCLOAK_REALM:?VITE_KEYCLOAK_REALM is required}
+      VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID:?VITE_KEYCLOAK_CLIENT_ID is required}
+    ports:
+      - "3000:8080"

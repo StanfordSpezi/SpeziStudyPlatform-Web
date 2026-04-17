@@ -1,28 +1,33 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
-import { cn } from "@stanfordspezi/spezi-web-design-system";
 import { type ReactNode } from "react";
+import { cn } from "@/utils/cn";
 
-interface BluePrintCardProps {
+interface BlueprintContainerProps {
   children?: ReactNode;
   className?: string;
 }
 
+const horizontalBorderGradient = {
+  backgroundImage:
+    "linear-gradient(to right, var(--color-border-tertiary) 0%, transparent 30%, transparent 70%, var(--color-border-tertiary) 100%)",
+};
+
 export const BlueprintContainer = ({
   children,
   className,
-}: BluePrintCardProps) => {
+}: BlueprintContainerProps) => {
   return (
     <div
       className={cn(
         "[--border-width:1px] [--card-padding:--spacing(6)]",
-        "w-full rounded-xl border-(length:--border-width) p-(--card-padding)",
+        "relative w-full rounded-xl border-(length:--border-width) p-(--card-padding)",
         className,
       )}
     >
@@ -32,10 +37,7 @@ export const BlueprintContainer = ({
           "absolute top-(--card-padding) left-0 -translate-y-(--border-width)",
           "h-(--border-width) w-full",
         )}
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-border-tertiary) 0%, transparent 30%, transparent 70%, var(--color-border-tertiary) 100%)",
-        }}
+        style={horizontalBorderGradient}
       />
 
       {/* Horizontal Bottom Border */}
@@ -44,10 +46,7 @@ export const BlueprintContainer = ({
           "absolute bottom-(--card-padding) left-0 translate-y-(--border-width)",
           "h-(--border-width) w-full",
         )}
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-border-tertiary) 0%, transparent 30%, transparent 70%, var(--color-border-tertiary) 100%)",
-        }}
+        style={horizontalBorderGradient}
       />
 
       {/* Vertical Left Border */}

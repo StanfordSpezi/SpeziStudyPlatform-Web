@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -20,13 +20,15 @@ const minuteValues = [0, 30] as const;
 
 type TimeSelectMinute = (typeof minuteValues)[number];
 
-interface TimeSelectValue {
+export interface TimeSelectValue {
   hours: number;
   minutes: TimeSelectMinute;
 }
 
-interface TimeSelectProps
-  extends Omit<ComponentProps<typeof Select>, "value" | "onChange"> {
+export interface TimeSelectProps extends Omit<
+  ComponentProps<typeof Select>,
+  "value" | "onChange" | "children"
+> {
   id?: string;
   value?: TimeSelectValue | null;
   onChange: (value: TimeSelectValue) => void;
@@ -34,18 +36,10 @@ interface TimeSelectProps
   className?: string;
 }
 
-const formatOptionValue = (hours: number, minutes: TimeSelectMinute) => {
+const formatTime = (hours: number, minutes: TimeSelectMinute) => {
   const hoursString = hours.toString().padStart(2, "0");
   const minutesString = minutes.toString().padStart(2, "0");
   return `${hoursString}:${minutesString}`;
-};
-
-const formatOptionLabel = (hours: number, minutes: TimeSelectMinute) => {
-  const period = hours < 12 ? "AM" : "PM";
-  const twelveHour = hours % 12 === 0 ? 12 : hours % 12;
-  const minuteLabel = minutes === 0 ? "00" : "30";
-
-  return `${twelveHour}:${minuteLabel} ${period}`;
 };
 
 const timeOptions: Array<{
@@ -57,14 +51,25 @@ const timeOptions: Array<{
 
 for (let hour = 0; hour < 24; hour += 1) {
   for (const minutes of minuteValues) {
+    const formattedTime = formatTime(hour, minutes);
     timeOptions.push({
-      value: formatOptionValue(hour, minutes),
-      label: formatOptionLabel(hour, minutes),
+      value: formattedTime,
+      label: formattedTime,
       hours: hour,
       minutes,
     });
   }
 }
+
+const isValidTimeValue = (
+  hours: number,
+  minutes: number,
+): minutes is TimeSelectMinute =>
+  !Number.isNaN(hours) &&
+  !Number.isNaN(minutes) &&
+  hours >= 0 &&
+  hours <= 23 &&
+  minuteValues.includes(minutes as TimeSelectMinute);
 
 export const TimeSelect = ({
   id,
@@ -77,35 +82,18 @@ export const TimeSelect = ({
   const handleValueChange = (nextValue: string) => {
     const [hoursPart, minutesPart] = nextValue.split(":");
     const hours = Number.parseInt(hoursPart, 10);
-    const minutes = Number.parseInt(minutesPart, 10) as TimeSelectMinute;
+    const minutes = Number.parseInt(minutesPart, 10);
 
-    if (
-      Number.isNaN(hours) ||
-      Number.isNaN(minutes) ||
-      hours < 0 ||
-      hours > 23 ||
-      !minuteValues.includes(minutes)
-    ) {
-      return;
-    }
+    if (!isValidTimeValue(hours, minutes)) return;
 
     onChange({ hours, minutes });
   };
 
   const getSelectedValue = () => {
-    if (!value) {
+    if (!value || !isValidTimeValue(value.hours, value.minutes)) {
       return undefined;
     }
-
-    if (
-      value.hours < 0 ||
-      value.hours > 23 ||
-      !minuteValues.includes(value.minutes)
-    ) {
-      return undefined;
-    }
-
-    return formatOptionValue(value.hours, value.minutes);
+    return formatTime(value.hours, value.minutes);
   };
 
   return (

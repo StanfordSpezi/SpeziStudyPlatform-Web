@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -12,7 +12,6 @@ import { cn } from "@/utils/cn";
 interface FieldLabelProps extends Omit<ComponentProps<"div">, "title"> {
   title: ReactNode;
   description?: ReactNode;
-  className?: string;
 }
 
 export const FieldLabel = ({

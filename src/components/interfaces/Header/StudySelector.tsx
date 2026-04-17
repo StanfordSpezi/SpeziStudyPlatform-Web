@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford Biodesign Digital Health Spezi Web Study Platform open-source project
+// This source file is part of the Stanford Spezi open source project
 //
 // SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -9,6 +9,7 @@
 import {
   Dialog,
   DropdownMenuSeparator,
+  Skeleton,
   useOpenState,
 } from "@stanfordspezi/spezi-web-design-system";
 import { useQuery } from "@tanstack/react-query";
@@ -23,33 +24,38 @@ import { HeaderSelectorSkeleton } from "./HeaderSelectorSkeleton";
 import { NewStudyDialogContent } from "../NewStudyDialog";
 
 export const StudySelector = () => {
-  const params = useParams({ strict: false });
-  const { data: studies } = useQuery(
-    studyListQueryOptions({ team_id: params.team }),
-  );
-  const selectedStudy = studies?.find((study) => study.id === params.study);
+  const { group, study: studyId } = useParams({ strict: false });
+  const { data: studies } = useQuery({
+    ...studyListQueryOptions({ groupId: group ?? "" }),
+    enabled: !!group,
+  });
+  const selectedStudy = studies?.find((study) => study.id === studyId);
 
   const newStudyDialog = useOpenState();
 
-  if (!params.study || !params.team) {
+  if (!studyId || !group) {
     return null;
   }
 
-  if (!studies || !selectedStudy) {
+  if (!studies) {
     return <HeaderSelectorSkeleton hasIcon={false} />;
   }
 
+  const title = selectedStudy?.title ?? (
+    <Skeleton className="bg-fill-tertiary h-4 w-20 rounded-sm" />
+  );
+
   return (
     <>
-      <HeaderSelector selectedItem={{ title: selectedStudy.title }}>
+      <HeaderSelector selectedItem={{ title }}>
         <HeaderSelectorMenuLabel>Studies</HeaderSelectorMenuLabel>
         {studies.map((study) => (
           <HeaderSelectorMenuItem
             key={study.id}
             linkOptions={{
-              to: "/$team/$study",
+              to: "/$group/$study",
               params: {
-                team: study.teamId,
+                group,
                 study: study.id,
               },
             }}
@@ -71,7 +77,7 @@ export const StudySelector = () => {
         onOpenChange={newStudyDialog.setIsOpen}
       >
         <NewStudyDialogContent
-          teamId={params.team}
+          groupId={group}
           onSuccess={newStudyDialog.close}
         />
       </Dialog>
