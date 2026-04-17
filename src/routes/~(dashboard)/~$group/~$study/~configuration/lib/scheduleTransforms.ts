@@ -9,6 +9,7 @@
 import type {
   AllowedCompletionPolicy,
   ComponentSchedule,
+  ComponentScheduleInput,
   RepetitionPattern,
   ScheduleDefinition,
   StudyLifecycleEvent,
@@ -26,7 +27,7 @@ const DEFAULT_MINUTE = 30;
 /**
  * Single source of truth for default schedule form values.
  */
-export const SCHEDULE_DEFAULTS: ComponentSchedule = {
+export const SCHEDULE_DEFAULTS: ComponentScheduleInput = {
   scheduleDefinition: {
     type: "once",
     pattern: {
