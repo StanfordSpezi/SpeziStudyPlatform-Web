@@ -15,7 +15,7 @@ import { dedent } from "./src/utils/dedent";
 
 export default defineConfig(({ mode }) => ({
   root: ".",
-  base: "/SpeziStudyPlatform-Web/", // This is necessary for GitHub Pages
+  base: "/",
   plugins: [
     tanstackRouter({
       routeToken: "layout",
@@ -45,14 +45,6 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  server: {
-    proxy: {
-      "/api/v0": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-      },
     },
   },
 }));

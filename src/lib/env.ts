@@ -8,6 +8,17 @@
 
 import { z } from "zod";
 
+declare global {
+  interface Window {
+    __ENV__?: {
+      VITE_API_BASE_PATH?: string;
+      VITE_KEYCLOAK_URL?: string;
+      VITE_KEYCLOAK_REALM?: string;
+      VITE_KEYCLOAK_CLIENT_ID?: string;
+    };
+  }
+}
+
 const envSchema = z.object({
   // Default env variables
   BASE_URL: z.string(),
@@ -22,4 +33,7 @@ const envSchema = z.object({
   VITE_KEYCLOAK_CLIENT_ID: z.string().min(1),
 });
 
-export const env: ImportMetaEnv = envSchema.parse(import.meta.env);
+export const env: ImportMetaEnv = envSchema.parse({
+  ...import.meta.env,
+  ...window.__ENV__,
+});

@@ -60,7 +60,7 @@ export const setAccessTokenProvider = (
 
 // Configure the base URL for all API requests
 client.setConfig({
-  baseUrl: import.meta.env.DEV ? "/api/v0" : `${env.VITE_API_BASE_PATH}/api/v0`,
+  baseUrl: `${env.VITE_API_BASE_PATH}/api/v0`,
 });
 
 // Auth interceptor — injects Keycloak Bearer token

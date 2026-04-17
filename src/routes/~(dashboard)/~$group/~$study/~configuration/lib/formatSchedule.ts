@@ -8,7 +8,7 @@
 
 import type {
   AllowedCompletionPolicy,
-  ComponentSchedule,
+  ComponentScheduleInput,
   ScheduleDefinition,
   StudyLifecycleEvent,
 } from "@/lib/api/generated/types.gen";
@@ -85,7 +85,7 @@ const formatFrequency = (definition: ScheduleDefinition): string => {
 export const formatSchedule = ({
   scheduleDefinition: definition,
   completionPolicy,
-}: ComponentSchedule) => {
+}: ComponentScheduleInput) => {
   const { hour, minute } = extractScheduleTime(definition);
   const frequency = formatFrequency(definition);
   const offsetInDays =
