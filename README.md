@@ -35,35 +35,15 @@ To get started with the project, follow these steps:
    ```bash
    cp .env.example .env
    ```
-4. Start the development servers:
+4. Start the supporting services (API server, Keycloak) using the Docker Compose setup in [SpeziStudyPlatform-Infrastructure](https://github.com/StanfordSpezi/SpeziStudyPlatform-Infrastructure/tree/main/docker).
+5. Start the development server:
    ```bash
    npm run dev
    ```
 
-For more detailed instructions, check out the [installation guide](docs/guides/installation.md).
+## API Documentation
 
-## Explanations
-
-- [About the tech stack](docs/explanations/tech-stack.md)
-- [About deployments](docs/explanations/deployment.md)
-- [About styling and visual grammar](docs/explanations/styling.md)
-- [About the integration with the spezi web design system components](docs/explanations/design-system-components.md)
-- [About the development server](docs/explanations/development-server.md)
-
-## Tutorials
-
-- [Run and explore the development server](docs/tutorials/development-server.md)
-
-## Guides
-
-- [Install and run the project locally](docs/guides/installation.md)
-- [Run the E2E tests locally](docs/guides/e2e-testing-local.md)
-- [Add a new API endpoint](docs/guides/add-api-endpoint.md)
-
-## Reference
-
-- [App screenshots](docs/reference/screenshots.md)
-- [Color tokens reference](docs/reference/color-tokens.md)
+The API is defined using OpenAPI. The specification lives in the shared [SpeziStudyPlatform-API](https://github.com/StanfordSpezi/SpeziStudyPlatform-API) package.
 
 ## Contributing
 
